@@ -1,67 +1,67 @@
 <template>
   <div>
     <el-form :inline="true" style="float: left">
-      <el-form-item label="住院号" style="font-weight: bold;">
-        <el-input v-model="patientId" placeholder="住院号"></el-input>
+      <el-form-item label="Patient ID" style="font-weight: bold;">
+        <el-input v-model="patientId" placeholder="Patient ID"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="getPatientInfoByPatientIdAndLocation(patientId)">查询</el-button>
+        <el-button type="primary" @click="getPatientInfoByPatientIdAndLocation(patientId)">Search</el-button>
       </el-form-item>
     </el-form>
     <br><br><br>
     <el-table :data="patientInfos" style="width: 100%" >
-      <el-table-column prop="patientId" label="患者编号" width="80px">
+      <el-table-column prop="patientId" label="Patient ID" width="100px">
         <template slot-scope="scope">
-          {{ scope.row.patientId !== null ? scope.row.patientId : "暂无信息" }}
+          {{ scope.row.patientId !== null ? scope.row.patientId : "None" }}
         </template>
       </el-table-column>
-      <el-table-column prop="visitorId" label="门诊编号" width="80px">
+      <el-table-column prop="visitorId" label="Visitor ID" width="100px">
         <template slot-scope="scope">
-          {{ scope.row.visitorId !== null ? scope.row.visitorId : "暂无信息" }}
+          {{ scope.row.visitorId !== null ? scope.row.visitorId : "None" }}
         </template>
       </el-table-column>
-      <el-table-column prop="patientName" label="患者姓名">
+      <el-table-column prop="patientName" label="Patient Name">
         <template slot-scope="scope">
-          {{ scope.row.patientName !== null ? scope.row.patientName : "暂无信息" }}
+          {{ scope.row.patientName !== null ? scope.row.patientName : "None" }}
         </template>
       </el-table-column>
-      <el-table-column prop="gender" label="性别">
+      <el-table-column prop="gender" label="Gender">
         <template slot-scope="scope">
           <el-tag :type="scope.row.gender === 1 ? ' ' : 'danger'" disable-transitions>
-            {{ scope.row.gender === 1 ? '男' : '女' }}</el-tag>
+            {{ scope.row.gender === 1 ? 'Male' : 'Female' }}</el-tag>
 
         </template>
       </el-table-column>
-      <el-table-column prop="age" label="年龄">
+      <el-table-column prop="age" label="Age">
         <template slot-scope="scope">
-          {{ scope.row.age !== null ? scope.row.age : "暂无信息" }}
+          {{ scope.row.age !== null ? scope.row.age : "None" }}
         </template>
       </el-table-column>
-      <el-table-column prop="unit" label="科室">
+      <el-table-column prop="unit" label="Unit">
 
         <template slot-scope="scope">
           <el-tag :type="scope.row.unit.unitName !== null ? 'success' : 'danger'" disable-transitions>
-            {{ scope.row.unit !== null ? scope.row.unit.unitName : "暂无信息" }}</el-tag>
+            {{ scope.row.unit !== null ? scope.row.unit.unitName : "None" }}</el-tag>
 
         </template>
       </el-table-column>
-      <el-table-column prop="employee" label="医生">
+      <el-table-column prop="employee" label="Doctor">
         <template slot-scope="scope">
           <el-tag :type="scope.row.employee.employeeName !== null ? ' ' : 'danger'" disable-transitions>
-            {{ scope.row.employee !== null ? scope.row.employee.employeeName : "暂无信息" }}</el-tag>
+            {{ scope.row.employee !== null ? scope.row.employee.employeeName : "None" }}</el-tag>
 
         </template>
       </el-table-column>
 
-      <el-table-column label="操作">
+      <el-table-column label="Options">
         <template slot-scope="scope">
-          <el-button type="success" plain @click="openDialog(scope.$index, scope.row)">添加床位</el-button>
+          <el-button type="success" plain @click="openDialog(scope.$index, scope.row)">Add Bed </el-button>
         </template>
       </el-table-column>
     </el-table>
 
 
-    <el-dialog title="添加床位" :visible.sync="show">
+    <el-dialog title="Location Management" :visible.sync="show">
       <el-form
           ref="patientInfoDTO"
           :model="patientInfoDTO"
@@ -69,7 +69,7 @@
           label-width="80px"
           class="demo-ruleForm"
       >
-        <el-select v-model="patientInfoDTO.location"  clearable placeholder="请选择部门">
+        <el-select v-model="patientInfoDTO.location"  clearable placeholder="Choose Department">
           <el-option
               v-for="item in locations"
               :key="item.locationId"
@@ -81,9 +81,9 @@
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="show=false">取 消</el-button>
+        <el-button @click="show=false">cancel</el-button>
         <el-button type="primary" @click="addLocation(patientInfoDTO.location,index,patientId)"
-        >确 定</el-button
+        >Submit</el-button
         >
 
       </div>
@@ -130,7 +130,7 @@ export default {
         if(res.data.code==200){
           this.patientInfos= res.data.data;
         }else {
-          this.$message("没有此病人或该病人有床位")
+          this.$message("No Information Found")
         }
 
 
@@ -205,7 +205,7 @@ export default {
 
     },
     handleClose(done) {
-      this.$confirm('确认关闭？')
+      this.$confirm('Close Conformation？')
           .then(_ => {
             done();
           })

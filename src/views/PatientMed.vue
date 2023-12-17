@@ -5,32 +5,32 @@
     <div>
       <el-form ref="form" :model="ImdDTOs" label-width="100px">
         <el-col :span="6">
-          <el-form-item label="开始日期">
+          <el-form-item label="Start Date">
             <el-date-picker
               v-model="ImdDTOs.orderDate"
               type="date"
               value-format="yyyy-MM-dd"
-              placeholder="下达日期"
+              placeholder="Order Date"
             >
             </el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="截止日期">
+          <el-form-item label="End Date">
             <el-date-picker
               v-model="ImdDTOs.orderDate1"
               type="date"
               value-format="yyyy-MM-dd"
-              placeholder="下达日期"
+              placeholder="Order Date"
             >
             </el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="5">
-          <el-form-item label="住院号">
+          <el-form-item label="Patient ID">
             <el-input
               v-model="ImdDTOs.patientId"
-              placeholder="住院号"
+              placeholder="Patient ID"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -40,7 +40,7 @@
               type="primary"
               icon="el-icon-search"
               @click="selectPatientByImd"
-              >汇总查询</el-button
+              >Search</el-button
             >
           </el-form-item>
         </el-col>
@@ -59,23 +59,23 @@
     </div>
     <div>
       <!-- 汇总查询展示 -->
-      <div style="width: 20%">
+      <div style="width:320px">
         <el-table
           :data="ImdVOs"
           
           :row-class-name="tableRowClassName"
         >
         
-          <el-table-column prop="patientId" label="住院号" width="55" sortable>
+          <el-table-column prop="patientId" label="ID" width="55" >
           </el-table-column>
           
-          <el-table-column prop="patientName" label="姓名" width="80" sortable>
+          <el-table-column prop="patientName" label="Name" >
           </el-table-column>
           
-          <el-table-column  label="住院发药操作">
+          <el-table-column  label="Operation">
             <template slot-scope="scope">
               <el-button type="primary" plain @click="selectImd(scope.row)"
-                >查询发药</el-button
+                >Search Medication</el-button
               >
             </template>
           </el-table-column>
@@ -83,7 +83,7 @@
         </el-table>
       </div>
       <!-- 明细查询展示 -->
-      <div class="right-div">
+      <div class="right-div" style="margin-left: 350px">
         <el-table
         border
           :data="ImdVO"
@@ -92,61 +92,68 @@
           ref="multipleTable"
           :row-class-name="tableRowClassName"
         >
-         <el-table-column type="selection" width="30"> </el-table-column>
+         <el-table-column type="selection" width="35"></el-table-column>
           <el-table-column
             prop="patientBillId"
-            label="费用编号"
-            width="70"
+            label="Bill ID"
+            width="85"
             sortable
           >
           </el-table-column>
            
-          <el-table-column prop="patientId" label="住院号" width="50" sortable>
+          <el-table-column prop="patientId" label="Patient ID"  sortable>
           </el-table-column>
           
-          <el-table-column prop="patientName" label="姓名" width="100" sortable>
+          <el-table-column prop="patientName" label="Name" width="90" sortable>
           </el-table-column>
-          <el-table-column prop="gender" label="性别" width="50" sortable>
+          <el-table-column prop="gender" label="Gender" width="100" sortable>
             <template slot-scope="scope">
-               {{ scope.row.gender === 1 ? '男' : '女' }}
-                        </template>
+              <el-tag :type="scope.row.gender === 1 ? ' ' : 'danger'" disable-transitions>
+                {{ scope.row.gender === 1 ? 'Male' : 'Female' }}</el-tag>
+
+            </template>
           </el-table-column>
-          <el-table-column prop="unitName" label="科室" width="70" sortable>
+          <el-table-column prop="unitName" label="Unit" width="85" sortable>
           </el-table-column>
           <el-table-column
             prop="employeeName"
-            label="医生"
-            width="70"
+            label="Doctor"
+            width="95"
             sortable
           >
+            <template slot-scope="scope">
+              <el-tag :type="scope.row.employee.employeeName !== null ? ' ' : 'danger'" disable-transitions>
+                {{ scope.row.employee !== null ? scope.row.employee.employeeName : "None" }}</el-tag>
+
+            </template>
           </el-table-column>
           <el-table-column
             prop="drugCode"
-            label="国家药品编号"
-            width="100"
+            label="Drug Tag"
+            width="110"
             sortable
           >
           </el-table-column>
           <el-table-column
             prop="treatmentName"
-            label="药品名称"
-            width="140"
+            label="Drug Name"
+            width="125"
             sortable
           >
           </el-table-column>
-          <el-table-column prop="drugCount" label="数量" width="60" sortable>
+          <el-table-column prop="drugCount" label="Number" width="110" sortable>
           </el-table-column>
           <el-table-column
             prop="specification"
-            label="规格"
-            width="100"
+            label="Specification"
+
             sortable
           >
           </el-table-column>
           <el-table-column
             prop="orderDate"
-            label="下达时间"
-            width="160"
+            label="Order Date"
+
             sortable
           >
           </el-table-column>
@@ -160,10 +167,10 @@
               plain
               class="el-icon-s-promotion"
               @click="imd"
-              >确认发药</el-button
+              >Confirm</el-button
             >
           
-        <el-button @click="toggleSelection()">取消选择</el-button>
+        <el-button @click="toggleSelection()">Cancel</el-button>
       </div>
       </div>
     </div>
@@ -206,9 +213,9 @@ export default {
     },
      //批量发药事件
     imd() {
-      this.$confirm("核对完毕，确认发药？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$confirm("Check Complete，Dispense Confirm？", "prompt", {
+        confirmButtonText: "Accept",
+        cancelButtonText: "Cancel",
         type: "success",
       })
         .then(() => {
@@ -217,7 +224,7 @@ export default {
             .then((resp) => {
               if (resp.data.code == 200) {
                 this.$message({
-                  message: "发药完成!",
+                  message: "Dispense Complete!",
                   type: "success",
                 });
                 this.selectImd(this.ImdDTO);
@@ -272,14 +279,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.right-div {
-    position: absolute;
-    top: 150px;
-    right: 0;
-  /* float: right; */
-  width: 67%;
-  background-color: #fff;
-}
-</style>
