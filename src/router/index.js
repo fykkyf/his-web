@@ -43,7 +43,7 @@ import PatientLab from '../views/PatientLab.vue'
 import ClinicTable from '../views/ClinicTable.vue'
 import PatientOrder from '../views/PatientOrder.vue'
 import SetRole from "../views/SetRole.vue";
-import PatientRaido from "../views/PatientRaido.vue";
+import PatientRadio from "../views/PatientRadio.vue";
 
 // 创建国际化插件的实例
 const i18n = new VueI18n({
@@ -267,9 +267,9 @@ const routes = [
                 component: PatientOrder,
             },
             {
-                path: '/patientRaido',
-                name: 'patientRaido',
-                component: PatientRaido,
+                path: '/patientRadio',
+                name: 'patientRadio',
+                component: PatientRadio,
             },
             {
                 path: '/clinicTable',
