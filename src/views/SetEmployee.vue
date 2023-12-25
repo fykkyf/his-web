@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="success" icon="el-icon-plus" @click="show=true">添加新员工</el-button>
+    <el-button type="success" icon="el-icon-plus" @click="show=true">Create New Employee</el-button>
     <el-table
         :data="employeeVOs"
         border
@@ -8,22 +8,22 @@
       <el-table-column
           fixed
           prop="employeeId"
-          label="员工编号"
+          label="Id"
           width="100">
 
       </el-table-column>
 
       <el-table-column
           prop="employeeName"
-          label="员工姓名">
+          label="Name">
         <template slot-scope="scope">
-          <el-tag type="info"> {{scope.row.employeeName}}</el-tag>
+          <el-tag type="success"> {{scope.row.employeeName}}</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column
           prop="unit.unitName"
-          label="科室">
+          label="Unit">
         <template slot-scope="scope">
           <el-tag > {{scope.row.unit.unitName}}</el-tag>
         </template>
@@ -31,31 +31,31 @@
       </el-table-column>
       <el-table-column
         prop="role.roleName"
-        label="职位">
+        label="Job Title">
         <template slot-scope="scope">
           <el-tag type="success" > {{scope.row.role.roleName}}</el-tag>
         </template>
     </el-table-column>
       <el-table-column
           fixed="right"
-          label="操作"
+          label="Setting"
       >
         <template slot-scope="scope">
-          <el-button  type="primary" icon="el-icon-edit"  @click="editEmployee(scope.row)">编辑</el-button>
-          <el-button  type="danger" icon="el-icon-delete" @click="removeEmployee(scope.row,scope.$index)" >删除</el-button>
+          <el-button  type="primary" icon="el-icon-edit"  @click="editEmployee(scope.row)">Edit</el-button>
+          <el-button  type="danger" icon="el-icon-delete" @click="removeEmployee(scope.row,scope.$index)" >Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog title="添加员工信息" :visible.sync="show">
+    <el-dialog title="Employee Information" :visible.sync="show">
       <el-form :model="employeeVO" >
-        <el-form-item label="员工姓名" style="margin-left: 290px; text-align: right;  width: 200px">
+
+        <el-form-item label="Name" >
           <el-input v-model="employeeVO.employeeName"></el-input>
         </el-form-item>
 
-        <span style="margin-right: 155px">科室</span>
-        <br><br>
-        <el-form-item title="科室">
-        <el-select v-model="employeeVO.unitId"  clearable placeholder="请选择科室" >
+<!--        <span style="margin-right: 165px">科室</span>-->
+        <el-form-item title="unit" >
+        <el-select v-model="employeeVO.unit.unitName"  clearable placeholder="" >
           <el-option
               v-for="unit in units"
               :key="unit.unitId"
@@ -65,10 +65,10 @@
 
         </el-select>
         </el-form-item>
-        <span style="margin-right: 155px">职位</span>
-        <br><br>
-        <el-form-item title="职位">
-        <el-select v-model="employeeVO.roleId"  clearable placeholder="请选择职位">
+<!--        <span style="margin-right: 155px">职位</span>-->
+
+        <el-form-item title="Job Title" >
+        <el-select v-model="employeeVO.role.roleName"  clearable placeholder="">
           <el-option
               v-for="role in roles"
               :key="role.roleId"
@@ -162,13 +162,18 @@ export default {
       this.$axios
           .post("http://localhost/employee/updateEmployee",this.employeeVO)
           .then(res=>{
-            if(res.data.code==200){
+            if(res.data.code==201){
               this.$message(res.data.msg);
               this.employeeVOs.push(this.employeeVO);
               this.getAllDoctors();
               this.employeeVO = '';
-            }else {
+            } else if(res.data.code==202){
               this.$message(res.data.msg);
+              this.getAllDoctors();
+              this.employeeVO = '';
+            } else {
+              this.$message(res.data.msg);
+              this.employeeVO = '';
             }
 
           })

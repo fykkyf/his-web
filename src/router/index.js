@@ -89,8 +89,8 @@ VueRouter.prototype.replace = function (location, resolve, reject) {
 const routes = [
     {
         path: '/',
-        name: 'login',
-        component: Login,
+        name: 'mainMenu',
+        component: MainMenu,
     },
     {
         path: '/index',
