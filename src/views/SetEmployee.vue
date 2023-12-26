@@ -55,7 +55,7 @@
 
 <!--        <span style="margin-right: 165px">科室</span>-->
         <el-form-item title="unit" >
-        <el-select v-model="employeeVO.unit.unitName"  clearable placeholder="" >
+        <el-select v-model="employeeVO.unit.unitId"  clearable placeholder="" >
           <el-option
               v-for="unit in units"
               :key="unit.unitId"
@@ -68,7 +68,7 @@
 <!--        <span style="margin-right: 155px">职位</span>-->
 
         <el-form-item title="Job Title" >
-        <el-select v-model="employeeVO.role.roleName"  clearable placeholder="">
+        <el-select v-model="employeeVO.role.roleId"  clearable placeholder="">
           <el-option
               v-for="role in roles"
               :key="role.roleId"
