@@ -6,34 +6,34 @@
         <div>
             <el-form ref="patientOrderDTO" :model="patientOrderDTO" label-width="80px">
                 <el-row type="flex" class="row-bg" justify="space-around">
-                    <el-col :span="6">
-                        <el-form-item label="项目：">
-                            <el-select v-model="patientOrderDTO.treatment.treatmentId" clearable placeholder="请选择项目">
+                    <el-col :span="4">
+                        <el-form-item label="Treatment：">
+                            <el-select v-model="patientOrderDTO.treatment.treatmentId" clearable placeholder="Select">
                                 <el-option v-for="item in treatments" :key="item.treatmentId" :label="item.treatmentName"
                                     :value="item.treatmentId">
                                 </el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="6">
-                        <el-form-item label="执行状态">
+                    <el-col :span="5">
+                        <el-form-item label="Status">
                             <el-radio-group v-model="patientOrderDTO.executionStatus">
-                                <el-radio :label="1">待审核</el-radio>
-                                <el-radio :label="3">已驳回</el-radio>
+                                <el-radio :label="1">Pending</el-radio>
+                                <el-radio :label="3">Rejected</el-radio>
                             </el-radio-group>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="6">
-                        <el-form-item label="医嘱类型">
+                    <el-col :span="8">
+                        <el-form-item label="Medication " >
                             <el-radio-group v-model="patientOrderDTO.orderType">
-                                <el-radio :label="1">短期</el-radio>
-                                <el-radio :label="2">长期</el-radio>
-                                <el-radio :label="''">不限</el-radio>
+                                <el-radio :label="1">Short Term</el-radio>
+                                <el-radio :label="2">Long Term</el-radio>
+                                <el-radio :label="''">Unlimited</el-radio>
                             </el-radio-group>
                         </el-form-item>
                     </el-col>
                     <el-col :span="2">
-                        <el-button type="success" icon="el-icon-search" @click="getByKeyword">查询患者</el-button>
+                        <el-button type="success" icon="el-icon-search" @click="getByKeyword">Search</el-button>
                     </el-col>
                 </el-row>
             </el-form>
@@ -41,51 +41,51 @@
         <div>
             <template>
                 <el-table :data="patientOrders" style="width: 100%" :row-class-name="tableRowClassName">
-                    <el-table-column prop="patientOrderId" label="医嘱编号" width="120px">
+                    <el-table-column prop="patientOrderId" label="OID" width="120px">
                         <template slot-scope="scope">
-                            {{ scope.row.patientOrderId !== null ? scope.row.patientOrderId : "暂无信息" }}
+                            {{ scope.row.patientOrderId !== null ? scope.row.patientOrderId : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="treatmentId" label="项目编号" width="120px">
+                    <el-table-column prop="treatmentId" label="TID" width="120px">
                         <template slot-scope="scope">
-                            {{ scope.row.treatmentId !== null ? scope.row.treatmentId : "暂无信息" }}
+                            {{ scope.row.treatmentId !== null ? scope.row.treatmentId : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="treatmentName" label="项目姓名">
+                    <el-table-column prop="treatmentName" label="Treatment">
                         <template slot-scope="scope">
-                            {{ scope.row.treatmentName !== null ? scope.row.treatmentName : "暂无信息" }}
+                            {{ scope.row.treatmentName !== null ? scope.row.treatmentName : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="administration.administrationId" label="用法">
+                    <el-table-column prop="administration.administrationId" label="Indication">
                         <template slot-scope="scope">
-                            {{ scope.row.administration !== null ? scope.row.administration.administrationName : "暂无信息" }}
+                            {{ scope.row.administration !== null ? scope.row.administration.administrationName : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="dosage.dosageId" label="用量">
+                    <el-table-column prop="dosage.dosageId" label="Dosage">
                         <template slot-scope="scope">
-                            {{ scope.row.dosage !== null ? scope.row.dosage.dosageName : "暂无信息" }}
+                            {{ scope.row.dosage !== null ? scope.row.dosage.dosageName : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="treatmentCount" label="个数">
+                    <el-table-column prop="treatmentCount" label="Number">
                         <template slot-scope="scope">
-                            {{ scope.row.treatmentCount !== null ? scope.row.treatmentCount : "无" }}
+                            {{ scope.row.treatmentCount !== null ? scope.row.treatmentCount : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="orderType" label="医嘱类型">
+                    <el-table-column prop="orderType" label="Type">
                         <template slot-scope="scope">
-                            {{ scope.row.orderType === 1 ? "短期" : "长期" }}
+                            {{ scope.row.orderType === 1 ? "Short" : "Long" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="executionTime" label="执行时间">
+                    <el-table-column prop="executionTime" label="Execution Time">
                         <template slot-scope="scope">
-                            {{ scope.row.executionTime !== null ? formatDate(scope.row.executionTime) : "暂无信息" }}
+                            {{ scope.row.executionTime !== null ? formatDate(scope.row.executionTime) : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="executionStatus" label="执行状态" :formatter="formatStatus">
+                    <el-table-column prop="executionStatus" label="Status" :formatter="formatStatus">
                     </el-table-column>
-                    <el-table-column label="操作" width="200px">
+                    <el-table-column label="Operations" width="200px">
                         <template slot-scope="scope">
-                            <el-button size="mini" @click="handleModifyOrder(scope.row)" type="warning" v-if="scope.row.executionStatus == 1 || scope.row.executionStatus == 3">修改医嘱</el-button>
+                            <el-button size="mini" @click="handleModifyOrder(scope.row)" type="warning" v-if="scope.row.executionStatus == 1 || scope.row.executionStatus == 3">Edit</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -93,39 +93,39 @@
         </div>
         <!-- 修改医嘱 -->
         <div>
-            <el-dialog title="医嘱信息" :visible.sync="orderDialogVisible" width="80%" center>
+            <el-dialog title="Prescribe Information" :visible.sync="orderDialogVisible" width="80%" center>
                 <el-form :model="patientOrderDTO">
                     <el-row type="flex" class="row-bg" justify="space-around">
                         <el-col :span="10">
-                            <el-form-item label="项目信息:">
-                                <el-select v-model="patientOrderDTO.treatment.treatmentId" clearable placeholder="请选择项目">
+                            <el-form-item label="Treatment Detail:" label-width="150px">
+                                <el-select v-model="patientOrderDTO.treatment.treatmentId" clearable placeholder="" >
                                     <el-option v-for="item in treatments" :key="item.treatmentId"
                                         :label="item.treatmentName" :value="item.treatmentId">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="出院诊断:" v-if="patientOrderDTO.treatment.treatmentId == 7">
-                                <el-select v-model="patientOrderDTO.dischargeDiagnosis.diseaseId" placeholder="请选择入院诊断">
+                            <el-form-item label="Discharge Diagnosis:" v-if="patientOrderDTO.treatment.treatmentId == 7" label-width="150px">
+                                <el-select v-model="patientOrderDTO.dischargeDiagnosis.diseaseId" placeholder="">
                                     <el-option v-for="item in dischargeDiagnoses" :key="item.diseaseId"
                                         :label="item.diseaseName" :value="item.diseaseId">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="用法信息:" v-if="patientOrderDTO.treatment.treatmentId !== 7">
-                                <el-select v-model="patientOrderDTO.administrationId" clearable placeholder="请选择用法">
+                            <el-form-item label="Indication:" v-if="patientOrderDTO.treatment.treatmentId !== 7" label-width="150px">
+                                <el-select v-model="patientOrderDTO.administrationId" clearable placeholder="">
                                     <el-option v-for="item in administrations" :key="item.administrationId"
                                         :label="item.administrationName" :value="item.administrationId">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="用量信息:" v-if="patientOrderDTO.treatment.treatmentId !== 7">
-                                <el-select v-model="patientOrderDTO.dosageId" clearable placeholder="请选择用量">
+                            <el-form-item label="Dosage:" v-if="patientOrderDTO.treatment.treatmentId !== 7" label-width="150px">
+                                <el-select v-model="patientOrderDTO.dosageId" clearable placeholder="">
                                     <el-option v-for="item in dosages" :key="item.dosageId" :label="item.dosageName"
                                         :value="item.dosageId">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="个数:" v-if="patientOrderDTO.treatment.treatmentId !== 7">
+                            <el-form-item label="Number:" v-if="patientOrderDTO.treatment.treatmentId !== 7" label-width="150px">
                                 <el-input v-model="patientOrderDTO.treatment.treatmentCount"
                                     style="width: 200px;"></el-input>
                             </el-form-item>
@@ -133,8 +133,8 @@
                     </el-row>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
-                    <el-button @click="handlerCancel()">取 消</el-button>
-                    <el-button type="primary" @click="submitPatientOrder()">确 定</el-button>
+                    <el-button @click="handlerCancel()">Cancel</el-button>
+                    <el-button type="primary" @click="submitPatientOrder()">Submit</el-button>
                 </span>
             </el-dialog>
         </div>
@@ -147,10 +147,10 @@ export default {
         //时间格式转换
         formatDate(date) {
             if (date !== null) {
-                const formattedDate = this.$moment(date, 'YYYY-MM-DD HH:mm:ss').format('YYYY年MM月DD日 HH:mm:ss');
+                const formattedDate = this.$moment(date, 'YYYY-MM-DD HH:mm:ss').format('MM/DD/YYYY HH:mm');
                 return formattedDate;
             } else {
-                return '暂无信息';
+                return 'None';
             }
         },
         formatStatus(row) {
@@ -159,19 +159,19 @@ export default {
             let statusText = "";
             switch (status) {
                 case 1:
-                    statusText = "待审核";
+                    statusText = "Pending";
                     break;
                 case 2:
-                    statusText = "已执行";
+                    statusText = "Done";
                     break;
                 case 3:
-                    statusText = "已驳回";
+                    statusText = "Rejected";
                     break;
                 case 4:
-                    statusText = "已停止";
+                    statusText = "Stopped";
                     break;
                 default:
-                    statusText = "未知";
+                    statusText = "Unknown";
             }
             return statusText;
         },
@@ -245,19 +245,12 @@ export default {
             this.orderDialogVisible = true
         },
         //时间格式转换
-        formatDate(date) {
-            if (date !== null) {
-                const formattedDate = this.$moment(date, 'YYYY-MM-DD HH:mm:ss').format('YYYY年MM月DD日 HH:mm:ss');
-                return formattedDate;
-            } else {
-                return '暂无信息';
-            }
-        },
+
         //修改医嘱---确认按钮
         submitPatientOrder() {
             this.$axios.post("http://localhost/patientOrder/modify", this.patientOrderDTO).then(resp => {
                 if (resp.data.code == 200) {
-                    this.$message.success("修改成功")
+                    this.$message.success("Edit Success")
                     this.getAllPatientOrdersByPatientId(this.$route.query.patientId)
                     this.patientOrderDTO = {treatment:{},executionStatus:1,patient:{}};
                     this.orderDialogVisible = false;
@@ -316,9 +309,9 @@ export default {
             this.$axios.post("http://localhost/patientOrder/getByKeyWord", this.patientOrderDTO).then(resp => {
                 if (resp.data.code === 200) {
                     this.patientOrders = resp.data.data.list;
-                    this.$message.success("查询成功")
+                    this.$message.success("Search Success")
                 } else {
-                    this.$message.error("查询失败")
+                    this.$message.error("Search Failed")
                 }
             })
         },
@@ -372,19 +365,7 @@ export default {
             units: [],
             employees: [],
             orderDialogVisible: false,
-            patientOrderDTO: {
-                treatment: {
-                    treatmentId: '',
-                    treatmentName: '',
-                    treatmentCategory: '',
-                    treatmentCount: ''
-                },
-                dischargeDiagnosis: {
-                    dischargeDiagnosisId: '',
-                    dischargeDiagnosisName: ''
-                }
 
-            },
             treatments: [],
             administrations: [],
             dosages: [],
