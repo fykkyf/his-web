@@ -99,6 +99,12 @@ const routes = [
 
     },
     {
+        path: '/Login',
+        name: 'Login',
+        component: Login,
+
+    },
+    {
         path: '/mainMenu',
         name: 'mainMenu',
         component: MainMenu,
