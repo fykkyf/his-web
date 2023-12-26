@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="success" icon="el-icon-plus" @click="show=true">添加新科室</el-button>
+    <el-button type="success" icon="el-icon-plus" @click="show=true">Create New Unit</el-button>
     <el-table
         :data="units"
         border
@@ -8,13 +8,13 @@
       <el-table-column
           fixed
           prop="unitId"
-          label="科室编号"
+          label="ID"
           width="100">
       </el-table-column>
 
       <el-table-column
           prop="unitName"
-          label="科室名称">
+          label="Unit Name">
         <template slot-scope="scope">
           <el-tag type="info"> {{scope.row.unitName}}</el-tag>
         </template>
@@ -22,25 +22,33 @@
 
       <el-table-column
           fixed="right"
-          label="操作"
+          label="Operations"
       >
         <template slot-scope="scope">
-          <el-button  type="primary" icon="el-icon-edit"  @click="editUnit(scope.row)">编辑</el-button>
-          <el-button type="danger" icon="el-icon-delete"  @click="removeUnit(scope.row,scope.$index)" >删除</el-button>
+          <el-button  type="primary" icon="el-icon-edit"  @click="editUnit(scope.row)">Edit</el-button>
+          <el-button type="danger" icon="el-icon-delete"  @click="confirmDelete(scope.row,scope.$index)" >Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog title="添加科室信息" :visible.sync="show">
+    <el-dialog title="Create New unit" :visible.sync="show">
       <el-form :model="unit">
-        <el-form-item label="科室名称" >
+        <el-form-item label="Name" >
           <el-input v-model="unit.unitName"></el-input>
         </el-form-item>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="show = false">取 消</el-button>
-        <el-button type="primary" @click="toUpdate">确 定</el-button>
+        <el-button @click="closeDialog">Cancel</el-button>
+        <el-button type="primary" @click="toUpdate">Submit</el-button>
       </div>
+    </el-dialog>
+
+    <el-dialog title="Confirm" :visible.sync="showConfirm">
+      <span>Please Confirm if You Want to Delete</span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="showConfirm = false">Cancel</el-button>
+    <el-button type="primary" @click="removeUnit">Confirm</el-button>
+    </span>
     </el-dialog>
   </div>
 
@@ -58,11 +66,21 @@ export default {
         unitName:'',
       },
       show:false,
-
+      deleteIndex:'',
+      showConfirm:  false,
     }
   },
   methods: {
+    closeDialog() {
+      this.show = false;
+      this.unit = {};
+    },
+    confirmDelete(row,index){
 
+      this.unit = row;
+      this.deleteIndex = index;
+      this.showConfirm=true;
+    },
     getAllUnits(){
       this.$axios.get("http://localhost/unit/getAll")
           .then(resp => {
@@ -96,19 +114,20 @@ export default {
       this.unit = row;
       this.show=true;
     },
-    removeUnit(row, index){
+    removeUnit(){
 
       this.$axios
-          .post("http://localhost/unit/remove/" + row.unitId)
+          .post("http://localhost/unit/remove/" + this.unit.unitId)
           .then(res => {
             if (res.data.code == 200) {
-              this.$message("删除成功")
-              this.units.splice(index, 1);
+              this.$message("Delete Success")
+              this.units.splice(this.deleteIndex, 1);
             }else {
-              this.$message("删除失败")
+              this.$message("Delete Failed")
             }
 
           })
+      this.showConfirm=false;
     },
 
   },

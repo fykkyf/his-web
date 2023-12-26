@@ -1,14 +1,14 @@
 <template>
   <div>
+    <el-button type="success" icon="el-icon-plus" @click="showEdit=true">Create New Role</el-button>
     <el-table :data="roles" style="width: 100%">
-      <el-table-column prop="roleId" label="序号" width="100"> </el-table-column>
-      <el-table-column prop="roleName" label="姓名" width="100"> </el-table-column>
-      <el-table-column label="操作" >
+      <el-table-column prop="roleId" label="ID" width="100px"> </el-table-column>
+      <el-table-column prop="roleName" label="Name" > </el-table-column>
+      <el-table-column label="Operations" >
         <template slot-scope="scope">
-          <el-button  type="primary" @click="giveMenu(scope.$index, scope.row)" width="100">
-            分配菜单
-          </el-button>
-
+          <el-button  type="success" @click="giveMenu(scope.$index, scope.row)" >Menu</el-button>
+          <el-button  type="primary" @click="editRole(scope.row)" >Edit</el-button>
+          <el-button  type="danger" @click="confirmDelete(scope.row,scope.$index)" >Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -31,11 +31,30 @@
       >
       </el-tree>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="onSubmit()">确定</el-button>
-        <el-button @click="closeDialog">取消</el-button>
+        <el-button @click="closeDialog">Cancel</el-button>
+        <el-button type="primary" @click="onSubmit()">Submit</el-button>
       </div>
     </el-dialog>
+<!-- edit Role   -->
+    <el-dialog title="Create New Position" :visible.sync="showEdit">
+      <el-form :model="role">
+        <el-form-item label="Job Title" >
+          <el-input v-model="role.roleName"></el-input>
+        </el-form-item>
 
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="closeRole">Cancel</el-button>
+        <el-button type="primary" @click="toUpdate">Submit</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="Confirm" :visible.sync="showConfirm">
+      <span>Please Confirm if You Want to Delete</span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="showConfirm = false">Cancel</el-button>
+    <el-button type="primary" @click="deleteRole">Confirm</el-button>
+    </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -44,11 +63,13 @@ export default {
   data() {
     return {
       dialogVisible: false,
-
-
       myTitle: "",
       roles: [],
+      role:{},
       show: false,
+      showEdit: false,
+      showConfirm: false,
+      deleteIndex:'',
       menus: [],
       defaultProps: {
         children: "children",
@@ -67,6 +88,49 @@ export default {
     this.getAllRoles();
   },
   methods: {
+    toUpdate(){
+      console.log(this.unit);
+      this.$axios
+          .post("http://localhost/role/updateRole",this.role)
+          .then(res=>{
+            if(res.data.code==200){
+              this.$message(res.data.msg);
+              this.getAllRoles();
+              this.role = '';
+            }else {
+              this.$message(res.data.msg);
+            }
+
+          })
+      this.getAllRoles();
+      this.showEdit=false;
+    },
+    editRole(row){
+      console.log(row);
+      this.role = row;
+      this.showEdit=true;
+    },
+    confirmDelete(row,index){
+
+      this.role = row;
+      this.deleteIndex = index;
+      this.showConfirm=true;
+    },
+    deleteRole(){
+
+      this.$axios
+          .post("http://localhost/role/removeRole/" + this.role.roleId)
+          .then(res => {
+            if (res.data.code == 200) {
+              this.$message("Delete Success")
+              this.roles.splice(this.deleteIndex, 1);
+            }else {
+              this.$message("Delete Failed")
+            }
+
+          })
+      this.showConfirm=false;
+    },
     // 获取菜单信息
     getAllMenus() {
       this.$axios.get("http://localhost/menu/getAll").then((resp) => {
@@ -78,7 +142,10 @@ export default {
       this.show = false;
       this.menucheckedkeys = [];
     },
-
+    closeRole() {
+      this.showEdit = false;
+      this.role = {};
+    },
     // 提交对话框的确定
     onSubmit() {
       let allMenuIds = [];
@@ -95,11 +162,11 @@ export default {
           .post("http://localhost/role/giveMenu", this.roleMenu)
           .then((resp) => {
             if (resp.data.code == 200) {
-              this.$message.success("分配成功~");
+              this.$message.success("Set Success");
               this.show = false;
               this.menucheckedkeys = [];
             } else {
-              this.$message.error("分配失败");
+              this.$message.error("Failed");
             }
           });
     },

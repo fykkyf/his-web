@@ -2,27 +2,27 @@
   <div class="background">
     <el-form ref="form" :model="user" label-width="80px" class="loginForm">
       <div class="container">
-        <el-form-item label="账号">
+        <el-form-item label="Username">
           <el-input v-model="user.userName"></el-input>
         </el-form-item>
       </div>
       <div class="container">
-        <el-form-item label="密码">
+        <el-form-item label="Password">
           <el-input v-model="user.password" show-password></el-input>
         </el-form-item>
       </div>
 
-      <el-form-item label="验证码">
+      <el-form-item label="Verification">
         <el-input v-model="user.verifycode"></el-input>
         <img :src="verifycodesrc" @click="createVerifyCode()" />
       </el-form-item>
 
       <div class="container">
         <el-form-item>
-          <el-button @click="login">登录</el-button>
+          <el-button @click="login">Login</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="findpassword">找回密码</el-button>
+          <el-button @click="findpassword">Find Password</el-button>
         </el-form-item>
       </div>
     </el-form>
