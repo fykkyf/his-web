@@ -33,8 +33,8 @@
           </el-col>
           <el-col :span="4">
             <el-form-item label="">
-              <el-button type="success" plain class="el-icon-circle-plus-outline" @click="toaddTreatment1=true">新增项目</el-button>
-              <el-button type="primary" icon="el-icon-search" @click="selectAllTreatment">查询</el-button>
+              <el-button type="success" plain class="el-icon-circle-plus-outline" @click="toaddTreatment1=true">Create</el-button>
+              <el-button type="primary" icon="el-icon-search" @click="selectAllTreatment">Search</el-button>
             </el-form-item>
           </el-col>
 
@@ -51,7 +51,7 @@
       >
         <el-table-column
           prop="treatmentId"
-          label="项目编号"
+          label="ID"
           width="100"
           sortable
         >
@@ -59,7 +59,7 @@
         </el-table-column>
         <el-table-column
           prop="treatmentName"
-          label="项目名称"
+          label="Name"
 
           sortable
         >
@@ -68,19 +68,19 @@
        
         <el-table-column
           prop="treatmentPrice"
-          label="实际价格(元)"
+          label="Price"
 
           sortable
         >
         </el-table-column>
         <el-table-column
           prop="insurancePrice"
-          label="医保价格(元)"
+          label="Price(Ins)"
 
           sortable
         >
         </el-table-column>
-        <el-table-column label="启用状态"  >
+        <el-table-column label="Status"  >
           <template slot-scope="scope">
             <el-switch
               v-model="scope.row.treatmentStatus"
@@ -94,11 +94,11 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="基本信息操作">
+        <el-table-column label="Operations">
           <template slot-scope="scope">
     
             <el-button type="warning" size="small" @click="to_updateTreatment(scope.row)"
-              >修改</el-button
+              >Edit</el-button
             >
           </template>
         </el-table-column>
@@ -118,62 +118,61 @@
 
      <!-- 项目修改 -->
 
-         <el-dialog title="项目信息" :visible.sync="toupdateTreatment1">
+         <el-dialog title="Treatment Information" :visible.sync="toupdateTreatment1">
           <el-form ref="form" :model="TreatmentDTOs3" label-width="100px" >
-              <el-form-item label="项目编号" >
+              <el-form-item label="ID" label-width="150px">
                   <el-input v-model="TreatmentDTOs3.treatmentId" :disabled="true"></el-input>
               </el-form-item>
 
-               <el-form-item label="项目编号" >
+               <el-form-item label="Name" label-width="150px">
                   <el-input v-model="TreatmentDTOs3.treatmentName" ></el-input>
               </el-form-item>
 
-              <el-form-item label="实际价格">
+              <el-form-item label="Actual Price" label-width="150px">
                   <el-input v-model="TreatmentDTOs3.treatmentPrice"></el-input>
               </el-form-item>
             
-              <el-form-item label="医保价格">
+              <el-form-item label="Insurance Price" label-width="150px">
                   <el-input v-model="TreatmentDTOs3.insurancePrice"></el-input>
               </el-form-item>
 
           </el-form>
           <div slot="footer" class="dialog-footer">
-              <el-button @click="cancel3" >取 消</el-button>
-              <el-button type="primary" @click="updateTreatment1">确 定</el-button>
+              <el-button @click="cancel3" >Cancel</el-button>
+              <el-button type="primary" @click="updateTreatment1">Submit</el-button>
           </div>
       </el-dialog>
 
 
      <!-- 新增项目 -->
 
-         <el-dialog title="项目信息" :visible.sync="toaddTreatment1">
+         <el-dialog title="Create New Treatment" :visible.sync="toaddTreatment1">
           <el-form ref="form" :model="TreatmentDTOs4" :rules="rules" label-width="100px">
 
-                <el-form-item label="项目类型" prop="treatmentCategory">
-                 <el-select v-model="TreatmentDTOs4.treatmentCategory" clearable  placeholder="请选择类型"
-                                   >
-                                    <el-option label="诊疗" value="2"></el-option>
-                                    <el-option label="检验" value="3"></el-option>
-                                    <el-option label="检查" value="4"></el-option>
-                                </el-select>
+              <el-form-item label="Treatment type" prop="treatmentCategory" label-width="150px">
+                 <el-select v-model="TreatmentDTOs4.treatmentCategory" clearable  placeholder="" style="width: 700px">
+                    <el-option label="Treatment" value="2"></el-option>
+                    <el-option label="Lab Test" value="3"></el-option>
+                    <el-option label="Radiology" value="4"></el-option>
+                 </el-select>
               </el-form-item>
               
-               <el-form-item label="项目名称" prop="treatmentName">
+               <el-form-item label="Name" prop="treatmentName" label-width="150px">
                   <el-input v-model="TreatmentDTOs4.treatmentName"></el-input>
               </el-form-item>
 
-              <el-form-item label="实际价格" prop="treatmentPrice">
+              <el-form-item label="Actual Price" prop="treatmentPrice" label-width="150px">
                   <el-input v-model="TreatmentDTOs4.treatmentPrice"></el-input>
               </el-form-item>
             
-              <el-form-item label="医保价格" prop="insurancePrice">
+              <el-form-item label="Insurance Price" prop="insurancePrice" label-width="150px">
                   <el-input v-model="TreatmentDTOs4.insurancePrice"></el-input>
               </el-form-item>
 
           </el-form>
           <div slot="footer" class="dialog-footer">
-             <el-button @click="cancel4" >取 消</el-button>
-              <el-button type="primary" @click="addTreatment1('form')">确 定</el-button>
+             <el-button @click="cancel4" >Cancel</el-button>
+              <el-button type="primary" @click="addTreatment1('form')">Submit</el-button>
               
           </div>
       </el-dialog>
