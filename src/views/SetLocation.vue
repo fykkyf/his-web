@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="success" icon="el-icon-plus" @click="show=true">添加新床位</el-button>
+    <el-button type="success" icon="el-icon-plus" @click="show=true">Create New Location</el-button>
     <el-table
         :data="locations"
         border
@@ -8,44 +8,51 @@
       <el-table-column
           fixed
           prop="locationId"
-          label="床位编号"
+          label="ID"
           width="100">
       </el-table-column>
 
       <el-table-column
           prop="locationName"
-          label="床位位置">
+          label="Location">
       </el-table-column>
-      <el-table-column prop="locationStatus" label="床位状态"
-                       :filters="[{ text: '未使用', value: '1' }, { text: '使用中', value: '2' }]" :filter-method="filterTag"
+      <el-table-column prop="locationStatus" label="Status"
+                       :filters="[{ text: 'Not in Use', value: '1' }, { text: 'In Use', value: '2' }]" :filter-method="filterTag"
                        filter-placement="bottom-end">
         <template slot-scope="scope">
           <el-tag :type="scope.row.locationStatus === 1 ? 'success' : 'danger'" disable-transitions>{{
-              scope.row.locationStatus === 2 ? '使用中' : '未使用' }}</el-tag>
+              scope.row.locationStatus === 2 ? 'In Use' : 'Not in Use' }}</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column
           fixed="right"
-          label="操作"
+          label="Operations"
           >
         <template slot-scope="scope">
-          <el-button  type="primary" icon="el-icon-edit"  @click="editLocation(scope.row)">编辑</el-button>
-          <el-button type="danger" icon="el-icon-delete"  @click="removeLocation(scope.row,scope.$index)" >删除</el-button>
+          <el-button  type="primary" icon="el-icon-edit"  @click="editLocation(scope.row)">Edit</el-button>
+          <el-button type="danger" icon="el-icon-delete"  @click="confirmDelete(scope.row,scope.$index)" >Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog title="添加床位信息" :visible.sync="show">
+    <el-dialog title="Create New Location" :visible.sync="show">
       <el-form :model="location">
-        <el-form-item label="床位位置" >
+        <el-form-item label="Location" >
           <el-input v-model="location.locationName"></el-input>
         </el-form-item>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="show = false">取 消</el-button>
-        <el-button type="primary" @click="toUpdate">确 定</el-button>
+        <el-button @click="closeDialog">Cancel</el-button>
+        <el-button type="primary" @click="toUpdate">Submit</el-button>
       </div>
+    </el-dialog>
+    <el-dialog title="Confirm" :visible.sync="showConfirm">
+      <span>Please Confirm if You Want to Delete</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showConfirm = false">Cancel</el-button>
+        <el-button type="primary" @click="removeLocation">Confirm</el-button>
+      </span>
     </el-dialog>
   </div>
 
@@ -64,11 +71,21 @@ export default {
         locationStatus:'',
       },
       show:false,
-
+      deleteIndex:'',
+      showConfirm:  false,
     }
   },
   methods: {
+    closeDialog() {
+      this.show = false;
+      this.location = {};
+    },
+    confirmDelete(row,index){
 
+      this.location = row;
+      this.deleteIndex = index;
+      this.showConfirm=true;
+    },
     getAllLocations(){
       this.$axios.get("http://localhost/location/get/all")
           .then(resp => {
@@ -87,17 +104,21 @@ export default {
           .post("http://localhost/location/updateLocation",this.location)
           .then(res=>{
             if(res.data.code==200 ) {
-              if (this.location.locationId == null) {
-                this.$message("添加成功");
-              } else {
-                this.$message("修改成功");
-                this.location='';
-              }
+              this.$message("Created");
+              this.getAllLocations();
+              this.location='';
+
+            }else if(res.data.code==201 ) {
+              this.$message("Edit success");
+              this.getAllLocations();
+              this.location='';
+
             }else {
-              this.$message(res.data.data);
+              this.$message("Error");
             }
 
       })
+      this.getAllLocations();
       this.show=false;
       },
     editLocation(row){
@@ -105,19 +126,22 @@ export default {
       this.location = row;
       this.show=true;
     },
-    removeLocation(row,index){
+    removeLocation(){
 
       this.$axios
-          .post("http://localhost/location/removeLocation/" + row.locationId)
+          .post("http://localhost/location/removeLocation/" + this.location.locationId)
           .then(res => {
             if (res.data.code == 200) {
-              this.$message("删除成功")
-              this.locations.splice(index, 1);
-            }else {
-              this.$message("删除失败")
+              this.$message("Delete Success");
+              this.locations.splice(this.deleteIndex, 1);
+            } else if (res.data.code == 201){
+              this.$message(res.data.data);
+            } else{
+              this.$message("Delete Failed")
             }
 
           })
+      this.showConfirm=false;
     },
 
   },

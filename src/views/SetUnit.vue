@@ -46,9 +46,9 @@
     <el-dialog title="Confirm" :visible.sync="showConfirm">
       <span>Please Confirm if You Want to Delete</span>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="showConfirm = false">Cancel</el-button>
-    <el-button type="primary" @click="removeUnit">Confirm</el-button>
-    </span>
+        <el-button @click="showConfirm = false">Cancel</el-button>
+        <el-button type="primary" @click="removeUnit">Confirm</el-button>
+      </span>
     </el-dialog>
   </div>
 

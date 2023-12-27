@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="success"   icon="el-icon-plus" @click="show=true">添加新用量</el-button>
+    <el-button type="success"   icon="el-icon-plus" @click="show=true">Create New Dosage</el-button>
     <el-table
         :data="dosages"
         border
@@ -8,13 +8,13 @@
       <el-table-column
           fixed
           prop="dosageId"
-          label="用量编号"
+          label="ID"
           width="100">
       </el-table-column>
 
       <el-table-column
           prop="dosageName"
-          label="用量">
+          label="Dosage">
         <template slot-scope="scope">
           <el-tag type="info"> {{scope.row.dosageName}}</el-tag>
         </template>
@@ -22,25 +22,33 @@
 
       <el-table-column
           fixed="right"
-          label="操作"
+          label="Operations"
       >
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" @click="editDosage(scope.row)">编辑</el-button>
-          <el-button type="danger" icon="el-icon-delete" @click="removeDosage(scope.row,scope.$index)" >删除</el-button>
+          <el-button type="primary" icon="el-icon-edit" @click="editDosage(scope.row)">Edit</el-button>
+          <el-button type="danger" icon="el-icon-delete" @click="confirmDelete(scope.row,scope.$index)" >Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog title="添加用量信息" :visible.sync="show">
+    <el-dialog title="Create New Dosage" :visible.sync="show">
       <el-form :model="dosage">
-        <el-form-item label="用量" >
+        <el-form-item label="Dosage" >
           <el-input v-model="dosage.dosageName"></el-input>
         </el-form-item>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="show = false">取 消</el-button>
-        <el-button type="primary" @click="toUpdate">确 定</el-button>
+        <el-button @click="closeDialog">Cancel</el-button>
+        <el-button type="primary" @click="toUpdate">Submit</el-button>
       </div>
+    </el-dialog>
+
+    <el-dialog title="Confirm" :visible.sync="showConfirm">
+      <span>Please Confirm if You Want to Delete</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showConfirm = false">Cancel</el-button>
+        <el-button type="primary" @click="removeDosage">Confirm</el-button>
+      </span>
     </el-dialog>
   </div>
 
@@ -58,11 +66,21 @@ export default {
         dosageName:'',
       },
       show:false,
-
+      deleteIndex:'',
+      showConfirm:  false,
     }
   },
   methods: {
+    closeDialog() {
+      this.show = false;
+      this.dosage = {};
+    },
+    confirmDelete(row,index){
 
+      this.dosage = row;
+      this.deleteIndex = index;
+      this.showConfirm=true;
+    },
     getAllDosages(){
       this.$axios.get("http://localhost/dosage/getAll")
           .then(resp => {
@@ -96,19 +114,20 @@ export default {
       this.dosage = row;
       this.show=true;
     },
-    removeDosage(row, index){
+    removeDosage(){
 
       this.$axios
-          .post("http://localhost/dosage/remove/" + row.dosageId)
+          .post("http://localhost/dosage/remove/" + this.dosage.dosageId)
           .then(res => {
             if (res.data.code == 200) {
-              this.$message("删除成功")
-              this.dosages.splice(index, 1);
+              this.$message("Delete Success")
+              this.dosages.splice(this.deleteIndex, 1);
             }else {
-              this.$message("删除失败")
+              this.$message("Delete Failed")
             }
 
           })
+      this.showConfirm=false;
     },
 
   },

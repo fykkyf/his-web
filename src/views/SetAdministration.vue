@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="success" icon="el-icon-plus" @click="show=true" >添加新用法</el-button>
+    <el-button type="success" icon="el-icon-plus" @click="show=true" >Create New Indication</el-button>
     <el-table
         :data="administrations"
         border
@@ -8,13 +8,13 @@
       <el-table-column
           fixed
           prop="administrationId"
-          label="用法编号"
+          label="ID"
           width="100">
       </el-table-column>
 
       <el-table-column
           prop="administrationName"
-          label="用法" style="text-align: center">
+          label="Indication" style="text-align: center">
         <template slot-scope="scope">
           <el-tag type="info"> {{scope.row.administrationName}}</el-tag>
         </template>
@@ -22,25 +22,32 @@
 
       <el-table-column
           fixed="right"
-          label="操作"
+          label="Operations"
       >
         <template slot-scope="scope">
-          <el-button  type="primary" icon="el-icon-edit" @click="editAdministration(scope.row)">编辑</el-button>
-          <el-button type="danger" icon="el-icon-delete" @click="removeAdministration(scope.row,scope.$index)" >删除</el-button>
+          <el-button  type="primary" icon="el-icon-edit" @click="editAdministration(scope.row)">Edit</el-button>
+          <el-button type="danger" icon="el-icon-delete" @click="confirmDelete(scope.row,scope.$index)" >Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog title="添加用法信息" :visible.sync="show">
+    <el-dialog title="Create New Indication" :visible.sync="show">
       <el-form :model="administration">
-        <el-form-item label="用法" >
+        <el-form-item label="Indication" >
           <el-input v-model="administration.administrationName"></el-input>
         </el-form-item>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="show = false">取 消</el-button>
-        <el-button type="primary" @click="toUpdate">确 定</el-button>
+        <el-button @click="closeDialog">Cancel</el-button>
+        <el-button type="primary" @click="toUpdate">Submit</el-button>
       </div>
+    </el-dialog>
+    <el-dialog title="Confirm" :visible.sync="showConfirm">
+      <span>Please Confirm if You Want to Delete</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showConfirm = false">Cancel</el-button>
+        <el-button type="primary" @click="removeAdministration">Confirm</el-button>
+      </span>
     </el-dialog>
   </div>
 
@@ -58,11 +65,21 @@ export default {
         administrationName:'',
       },
       show:false,
-
+      deleteIndex:'',
+      showConfirm:  false,
     }
   },
   methods: {
+    closeDialog() {
+      this.show = false;
+      this.administration = {};
+    },
+    confirmDelete(row,index){
 
+      this.administration = row;
+      this.deleteIndex = index;
+      this.showConfirm=true;
+    },
     getAllAdministration(){
       this.$axios.get("http://localhost/administration/getAll")
           .then(resp => {
@@ -96,19 +113,20 @@ export default {
       this.administration = row;
       this.show=true;
     },
-    removeAdministration(row, index){
+    removeAdministration(){
 
       this.$axios
-          .post("http://localhost/administration/remove/" + row.administrationId)
+          .post("http://localhost/administration/remove/" + this.administration.administrationId)
           .then(res => {
             if (res.data.code == 200) {
-              this.$message("删除成功")
-              this.administrations.splice(index, 1);
+              this.$message("Delete Success")
+              this.administrations.splice(this.deleteIndex, 1);
             }else {
-              this.$message("删除失败")
+              this.$message("Delete Failed")
             }
 
           })
+      this.showConfirm=false;
     },
 
   },
