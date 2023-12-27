@@ -14,12 +14,12 @@
           </el-form-item>
         </el-col>
 
-        <el-col :span="6">
-          <el-form-item label="Medication ID">
+        <el-col :span="7">
+          <el-form-item label="Medication ID" label-width="120px">
             <el-input v-model="TreatmentDTO.drugCode" placeholder="ID"></el-input>
           </el-form-item>
 
-          <el-form-item label="Manufacturer">
+          <el-form-item label="Manufacturer" label-width="120px">
             <el-input v-model="TreatmentDTO.keyword" placeholder=" "></el-input>
           </el-form-item>
         </el-col>
@@ -35,7 +35,7 @@
             <el-radio v-model="TreatmentDTO.treatmentStatus" label="null">Unlimited</el-radio>
           </el-form-item>
         </el-col>
-        <el-col :span="2">
+        <el-col :span="3">
           <el-form-item label="">
             <el-button type="success" plain class="el-icon-circle-plus-outline"
               @click="toaddTreatment1 = true">New </el-button>
