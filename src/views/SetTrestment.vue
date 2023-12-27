@@ -1,63 +1,50 @@
 <template>
   <div>
-    <div>
+
       <el-form ref="form" :model="TreatmentDTO" >
+        <el-row type="flex" class="row-bg" justify="space-around">
+          <el-col :span="8" >
+            <el-form-item label="Name" >
+              <el-input v-model="TreatmentDTO.keyword" placeholder="Keyword" style="width: 400px"> </el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="Status">
+              <el-radio v-model="TreatmentDTO.treatmentStatus" label="1"
+                >Enable</el-radio
+              >
+              <el-radio v-model="TreatmentDTO.treatmentStatus" label="2"
+                >Disable</el-radio
+              >
+              <el-radio v-model="TreatmentDTO.treatmentStatus" label="null"
+                >Unlimited</el-radio
+              >
+            </el-form-item>
+          </el-col>
+          <el-col :span="5">
+            <el-form-item label="Type:">
+              <el-select v-model="TreatmentDTO.treatmentCategory" clearable  placeholder="">
 
-         <el-col :span="7">
-          <el-form-item label="名称">
-            <el-input
-              v-model="TreatmentDTO.keyword"
-              placeholder="名称关键字"
-            ></el-input>
-          </el-form-item>
+                <el-option label="Treatment" value="2"></el-option>
+                <el-option label="Lab Test" value="3"></el-option>
+                <el-option label="Radiology" value="4"></el-option>
 
-          <el-form-item label="启用状态">
-            <el-radio v-model="TreatmentDTO.treatmentStatus" label="1"
-              >启用</el-radio
-            >
-            <el-radio v-model="TreatmentDTO.treatmentStatus" label="2"
-              >停用</el-radio
-            >
-            <el-radio v-model="TreatmentDTO.treatmentStatus" label="null"
-              >不限</el-radio
-            >
-          </el-form-item>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item label="">
+              <el-button type="success" plain class="el-icon-circle-plus-outline" @click="toaddTreatment1=true">新增项目</el-button>
+              <el-button type="primary" icon="el-icon-search" @click="selectAllTreatment">查询</el-button>
+            </el-form-item>
           </el-col>
 
-        <el-col :span="6">
-             <el-form-item label="项目类型:">
-                                <el-select v-model="TreatmentDTO.treatmentCategory" clearable  placeholder="请选择类型"
-                                   >
-                                    <el-option label="诊疗" value="2"></el-option>
-                                    <el-option label="检验" value="3"></el-option>
-                                    <el-option label="检查" value="4"></el-option>
-                                </el-select>
-                            </el-form-item>
-          <el-form-item label="">
-            <el-button
-              type="success"
-              plain
-              class="el-icon-circle-plus-outline"
-               @click="toaddTreatment1=true"
-              >新增项目</el-button
-            >
-             <el-button
-              type="primary"
-              icon="el-icon-search"
-              @click="selectAllTreatment"
-              >查询</el-button
-            >
-          </el-form-item>
-
-          <el-form-item label="">
-           
-          </el-form-item>
-        </el-col>
+        </el-row>
       </el-form>
-    </div>
+
     
     <!-- 列表展示 -->
-    <div>
+
       <el-table
         :data="TreatmentVO"
         style="width: 100%"
@@ -127,11 +114,11 @@
         :total="total"
       >
       </el-pagination>
-    </div>
+
 
 
      <!-- 项目修改 -->
-    <div>
+
          <el-dialog title="项目信息" :visible.sync="toupdateTreatment1">
           <el-form ref="form" :model="TreatmentDTOs3" label-width="100px" >
               <el-form-item label="项目编号" >
@@ -156,10 +143,10 @@
               <el-button type="primary" @click="updateTreatment1">确 定</el-button>
           </div>
       </el-dialog>
-    </div>
+
 
      <!-- 新增项目 -->
-    <div>
+
          <el-dialog title="项目信息" :visible.sync="toaddTreatment1">
           <el-form ref="form" :model="TreatmentDTOs4" :rules="rules" label-width="100px">
 
@@ -191,7 +178,7 @@
               
           </div>
       </el-dialog>
-    </div>
+
 
 
   </div>
@@ -214,7 +201,7 @@ export default {
       
      total:null,
       TreatmentDTO: {
-        pageSize: 5,
+        pageSize: 10,
         pageNum: 1,
       },//查询提交条件
       TreatmentVO: [],
