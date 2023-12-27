@@ -149,7 +149,7 @@
                             {{ scope.row.paidTime !== null ? formatDate(scope.row.paidTime) : "Not Yet" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="stayStatus" label="Adm">
+                    <el-table-column prop="stayStatus" label="Status">
                         <template slot-scope="scope">
                             {{ scope.row.stayStatus === 1 ? "Still In" : "DC" }}
                         </template>
