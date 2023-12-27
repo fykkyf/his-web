@@ -4,29 +4,29 @@
             <el-form ref="patientInfoDTO" :model="patientInfoDTO" label-width="80px">
                 <el-row type="flex" class="row-bg" justify="space-around">
                     <el-col :span="6">
-                        <el-form-item label="患者姓名">
-                            <el-input placeholder="请输入内容" v-model="patientInfoDTO.patientName" clearable></el-input>
+                        <el-form-item label="Name :">
+                            <el-input placeholder="" v-model="patientInfoDTO.patientName" clearable></el-input>
                         </el-form-item>
 
-                        <el-form-item label="患者性别">
+                        <el-form-item label="Gender :">
                             <el-radio-group v-model="patientInfoDTO.gender">
-                                <el-radio :label="1">男</el-radio>
-                                <el-radio :label="2">女</el-radio>
-                                <el-radio :label="''">不限</el-radio>
+                                <el-radio :label="1">Male</el-radio>
+                                <el-radio :label="2">Female</el-radio>
+                                <el-radio :label="''">No limit</el-radio>
                             </el-radio-group>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
-                        <el-form-item label="科室">
-                            <el-select v-model="patientInfoDTO.unitId" clearable placeholder="请选择科室"
+                        <el-form-item label="Unit">
+                            <el-select v-model="patientInfoDTO.unitId" clearable placeholder=""
                                 @change="getDoctorsByUnitId">
                                 <el-option v-for="item in units" :key="item.unitId" :label="item.unitName"
                                     :value="item.unitId">
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="医生">
-                            <el-select v-model="patientInfoDTO.employeeId" clearable placeholder="请选择医生"
+                        <el-form-item label="Physician">
+                            <el-select v-model="patientInfoDTO.employeeId" clearable placeholder=""
                                 @clear="getAllDoctors" @change="getUnitByDoctor">
                                 <el-option v-for="item in employees" :key="item.employeeId" :label="item.employeeName"
                                     :value="item.employeeId">
@@ -36,18 +36,18 @@
                     </el-col>
 
                     <el-col :span="6">
-                        <el-form-item label="入院状态">
+                        <el-form-item label="Status :">
                             <el-radio-group v-model="patientInfoDTO.stayStatus">
-                                <el-radio :label="1">未出院</el-radio>
-                                <el-radio :label="2">已出院</el-radio>
-                                <el-radio :label="''">不限</el-radio>
+                                <el-radio :label="1">Still In</el-radio>
+                                <el-radio :label="2">Discharge</el-radio>
+                                <el-radio :label="''">No Limit</el-radio>
                             </el-radio-group>
                         </el-form-item>
-                        <el-form-item label="结算状态">
+                        <el-form-item label="Payment :">
                             <el-radio-group v-model="patientInfoDTO.paymentStatus">
-                                <el-radio :label="1">未结束</el-radio>
-                                <el-radio :label="2">已结算</el-radio>
-                                <el-radio :label="''">不限</el-radio>
+                                <el-radio :label="1">Unpaid</el-radio>
+                                <el-radio :label="2">Paid</el-radio>
+                                <el-radio :label="''">No Limit</el-radio>
                             </el-radio-group>
                         </el-form-item>
                     </el-col>
@@ -60,94 +60,99 @@
         <div>
             <template>
                 <el-table :data="patientInfos" style="width: 100%" :row-class-name="tableRowClassName">
-                    <el-table-column prop="patientId" label="患者编号" width="80px">
+                    <el-table-column prop="patientId" label="PID" width="70px">
                         <template slot-scope="scope">
-                            {{ scope.row.patientId !== null ? scope.row.patientId : "暂无信息" }}
+                            {{ scope.row.patientId !== null ? scope.row.patientId : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="visitorId" label="门诊编号" width="80px">
+                    <el-table-column prop="visitorId" label="VID" width="70px">
                         <template slot-scope="scope">
-                            {{ scope.row.visitorId !== null ? scope.row.visitorId : "暂无信息" }}
+                            {{ scope.row.visitorId !== null ? scope.row.visitorId : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="patientName" label="患者姓名">
+                    <el-table-column prop="patientName" label="Name" width="130px">
                         <template slot-scope="scope">
-                            {{ scope.row.patientName !== null ? scope.row.patientName : "暂无信息" }}
+                            {{ scope.row.patientName !== null ? scope.row.patientName : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="gender" label="性别">
+                    <el-table-column prop="gender" label="Gender" width="80px">
                         <template slot-scope="scope">
-                            {{ scope.row.gender === 1 ? '男' : '女' }}
+                            {{ scope.row.gender === 1 ? 'Male' : 'Female' }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="age" label="年龄">
+                    <el-table-column prop="age" label="Age" width="80px">
                         <template slot-scope="scope">
-                            {{ scope.row.age !== null ? scope.row.age : "暂无信息" }}
+                            {{ scope.row.age !== null ? scope.row.age : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="unit" label="科室">
+                    <el-table-column prop="unit" label="Unit" width="100px">
                         <template slot-scope="scope">
-                            {{ scope.row.unit !== null ? scope.row.unit.unitName : "暂无信息" }}
+                            {{ scope.row.unit !== null ? scope.row.unit.unitName : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="employee" label="医生">
+                    <el-table-column prop="employee" label="Physician" width="100px">
                         <template slot-scope="scope">
-                            {{ scope.row.employee !== null ? scope.row.employee.employeeName : "暂无信息" }}
+                            {{ scope.row.employee !== null ? scope.row.employee.employeeName : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="insuranceStatus" label="医保"
-                        :filters="[{ text: '无', value: '1' }, { text: '有', value: '2' }]" :filter-method="filterTag"
-                        filter-placement="bottom-end">
-                        <template slot-scope="scope">
-                            <el-tag :type="scope.row.insuranceStatus === 1 ? 'primary' : 'success'" disable-transitions>{{
-                                scope.row.insuranceStatus === 2 ? '有' : '无' }}</el-tag>
-                        </template>
-                    </el-table-column>
+                  <el-table-column prop="insuranceStatus" label="Insurance"
+                                   :filters="[{ text: 'No', value: '1' }, { text: 'Yes', value: '2' }]" :filter-method="filterTag"
+                                   filter-placement="bottom-end" width="100px">
+                    <template slot-scope="scope">
+                      <!--                            <el-tag :type="scope.row.insuranceStatus === 1 ? 'primary' : 'success'" disable-transitions>{{-->
+                      <!--                                scope.row.insuranceStatus === 1 ? '无' : '有' }}</el-tag>-->
+                      <el-tag :type="scope.row.insuranceStatus === 1 ? 'primary' : 'danger'" disable-transitions>
+                        <i v-if="scope.row.insuranceStatus === 1" class="el-icon-check"></i>
+                        <i v-else class="el-icon-minus"></i>
+                      </el-tag>
+
+                    </template>
+                  </el-table-column>
                     <!-- <el-table-column prop="insuranceStatus" label="医保">
                         <template slot-scope="scope">
                             {{ scope.row.insuranceStatus === 2 ? '有' : '无' }}
                         </template>
                     </el-table-column> -->
-                    <el-table-column prop="inTime" label="入院时间">
-                        <template slot-scope="scope">
-                            {{ scope.row.inTime !== null ? formatDate(scope.row.inTime) : "暂无信息" }}
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="outTime" label="出院时间">
-                        <template slot-scope="scope">
-                            {{ scope.row.outTime !== null ? formatDate(scope.row.outTime) : "暂无信息" }}
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="诊断">
-                        <template slot-scope="scope">
-                            <el-popover trigger="hover" placement="top">
-                                <p>门诊诊断: {{ scope.row.clinicDiagnosis !== null ? scope.row.clinicDiagnosis.diseaseName :
-                                    "暂无信息" }}</p>
-                                <p>入院诊断: {{ scope.row.admissionDiagnosis !== null ? scope.row.admissionDiagnosis.diseaseName
-                                    : "暂无信息" }}</p>
-                                <p>出院诊断: {{ scope.row.dischargeDiagnosis !== null ? scope.row.dischargeDiagnosis.diseaseName
-                                    : "暂无信息" }}</p>
-                                <div slot="reference" class="name-wrapper">
-                                    <el-tag size="medium" type="danger">诊断信息</el-tag>
-                                </div>
-                            </el-popover>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="三测">
-                        <template slot-scope="scope">
-                            <el-popover trigger="hover" placement="top">
-                                <p>血压: {{ scope.row.regularResult !== null ? scope.row.regularResult.pressure :
-                                    "暂无信息" }}</p>
-                                <p>血糖: {{ scope.row.regularResult !== null ? scope.row.regularResult.sugar
-                                    : "暂无信息" }}</p>
-                                <p>体温: {{ scope.row.regularResult !== null ? scope.row.regularResult.temp
-                                    : "暂无信息" }}</p>
-                                <div slot="reference" class="name-wrapper">
-                                    <el-tag size="medium" type="success">三测信息</el-tag>
-                                </div>
-                            </el-popover>
-                        </template>
-                    </el-table-column>
+                  <el-table-column prop="inTime" label="AT" width="100px">
+                    <template slot-scope="scope">
+                      {{ scope.row.inTime !== null ? formatDate(scope.row.inTime) : "None" }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="outTime" label="DT" width="100px">
+                    <template slot-scope="scope">
+                      {{ scope.row.outTime !== null ? formatDate(scope.row.outTime) : "None" }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="Diagnosis" width="130px">
+                    <template slot-scope="scope">
+                      <el-popover trigger="hover" placement="top">
+                        <p>Previous Diagnosis: {{ scope.row.clinicDiagnosis !== null ? scope.row.clinicDiagnosis.diseaseName :
+                            "None" }}</p>
+                        <p>Admission Diagnosis: {{ scope.row.admissionDiagnosis !== null ? scope.row.admissionDiagnosis.diseaseName
+                            : "None" }}</p>
+                        <p>Discharge Diagnosis: {{ scope.row.dischargeDiagnosis !== null ? scope.row.dischargeDiagnosis.diseaseName
+                            : "None" }}</p>
+                        <div slot="reference" class="name-wrapper">
+                          <el-tag size="medium" type="danger">Diagnosis</el-tag>
+                        </div>
+                      </el-popover>
+                    </template>
+                  </el-table-column>
+                  <el-table-column label="Vital Signs" width="130px">
+                    <template slot-scope="scope">
+                      <el-popover trigger="hover" placement="top">
+                        <p>BP: {{ scope.row.regularResult !== null ? scope.row.regularResult.pressure + ' mmHg' :
+                            "None" }}</p>
+                        <p>BS: {{ scope.row.regularResult !== null ? scope.row.regularResult.sugar + ' mmol/L'
+                            : "None" }}</p>
+                        <p>BT: {{ scope.row.regularResult !== null ? scope.row.regularResult.temp + ' °C'
+                            : "None" }}</p>
+                        <div slot="reference" class="name-wrapper">
+                          <el-tag size="medium" type="success">Vital Signs</el-tag>
+                        </div>
+                      </el-popover>
+                    </template>
+                  </el-table-column>
                     <!-- <el-table-column prop="clinicDiagnosis" label="门诊诊断">
                         <template slot-scope="scope">
                             {{ scope.row.clinicDiagnosis !== null ? scope.row.clinicDiagnosis.diseaseName : "暂无信息" }}
@@ -163,21 +168,21 @@
                             {{ scope.row.dischargeDiagnosis !== null ? scope.row.dischargeDiagnosis.diseaseName : "暂无信息" }}
                         </template>
                     </el-table-column> -->
-                    <el-table-column prop="location" label="床位号">
-                        <template slot-scope="scope">
-                            {{ scope.row.location !== null ? scope.row.location.locationName : "暂无信息" }}
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="paidTime" label="支付时间">
-                        <template slot-scope="scope">
-                            {{ scope.row.paidTime !== null ? formatDate(scope.row.paidTime) : "暂无信息" }}
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="stayStatus" label="入院状态">
-                        <template slot-scope="scope">
-                            {{ scope.row.stayStatus === 1 ? "未出院" : "已出院" }}
-                        </template>
-                    </el-table-column>
+                  <el-table-column prop="location" label="Location" width="90px">
+                    <template slot-scope="scope">
+                      {{ scope.row.location !== null ? scope.row.location.locationName : "None" }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="paidTime" label="PT" width="100px">
+                    <template slot-scope="scope">
+                      {{ scope.row.paidTime !== null ? formatDate(scope.row.paidTime) : "Not Yet" }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="stayStatus" label="Status">
+                    <template slot-scope="scope">
+                      {{ scope.row.stayStatus === 1 ? "Still In" : "DC" }}
+                    </template>
+                  </el-table-column>
                 </el-table>
             </template>
         </div>
@@ -196,10 +201,10 @@ export default {
         //时间格式转换
         formatDate(date) {
             if (date !== null) {
-                const formattedDate = this.$moment(date, 'YYYY-MM-DD HH:mm:ss').format('YYYY年MM月DD日 HH:mm:ss');
+                const formattedDate = this.$moment(date, 'YYYY-MM-DD HH:mm:ss').format('YYYY/MM/DD HH:mm');
                 return formattedDate;
             } else {
-                return '暂无信息';
+                return 'None';
             }
         },
         filterTag(value, row) {
@@ -280,9 +285,9 @@ export default {
                     console.log(resp.data.data)
                     this.patientInfos = resp.data.data.list;
                     this.total = resp.data.data.total;
-                    this.$message.success("查询成功")
+                    this.$message.success("Success")
                 } else {
-                    this.$message.error("查询失败")
+                    this.$message.error("Failed")
                 }
             })
         },

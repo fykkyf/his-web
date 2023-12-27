@@ -2,14 +2,15 @@
     <div>
         <div>
             <el-form ref="patientOrderDTO" :model="patientOrderDTO" label-width="80px">
-                <el-row type="flex" class="row-bg" justify="space-around">
+                <el-row type="flex" class="row-bg" justify="start">
                     <el-col :span="6">
-                        <el-form-item label="住院编号:">
-                            <el-input v-model="patientOrderDTO.patient.patientId" placeholder="住院编号"></el-input>
+                        <el-form-item label="Patient ID:">
+                            <el-input v-model="patientOrderDTO.patient.patientId" placeholder="" ></el-input>
                         </el-form-item>
                     </el-col>
+                  <el-col :span="15"></el-col>
                     <el-col :span="2">
-                        <el-button type="success" icon="el-icon-search" @click="getAllPatientOrdersByDaily">查询患者</el-button>
+                        <el-button type="success" icon="el-icon-search" @click="getAllPatientOrdersByDaily">Search</el-button>
                     </el-col>
                 </el-row>
             </el-form>
@@ -17,34 +18,34 @@
         <div>
             <template>
                 <el-table :data="patientOrders" style="width: 100%" :row-class-name="tableRowClassName">
-                    <el-table-column prop="patientBillId" label="费用编号" width="120px">
+                    <el-table-column prop="patientBillId" label="Bill Order ID" >
                         <template slot-scope="scope">
-                            {{ scope.row.patientBillId !== null ? scope.row.patientBillId : "暂无信息" }}
+                            {{ scope.row.patientBillId !== null ? scope.row.patientBillId : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="patientName" label="患者姓名" width="120px">
+                    <el-table-column prop="patientName" label="Patient Name">
                         <template slot-scope="scope">
-                            {{ scope.row.patientName !== null ? scope.row.patientName : "暂无信息" }}
+                            {{ scope.row.patientName !== null ? scope.row.patientName : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="treatmentId" label="项目编号" width="120px">
+                    <el-table-column prop="treatmentId" label="Treatment ID" >
                         <template slot-scope="scope">
-                            {{ scope.row.treatmentId !== null ? scope.row.treatmentId : "暂无信息" }}
+                            {{ scope.row.treatmentId !== null ? scope.row.treatmentId : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="treatmentName" label="项目姓名">
+                    <el-table-column prop="treatmentName" label="Treatment">
                         <template slot-scope="scope">
-                            {{ scope.row.treatmentName !== null ? scope.row.treatmentName : "暂无信息" }}
+                            {{ scope.row.treatmentName !== null ? scope.row.treatmentName : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="drugCount" label="个数">
+                    <el-table-column prop="drugCount" label="Number">
                         <template slot-scope="scope">
-                            {{ scope.row.drugCount !== null ? scope.row.drugCount : "无" }}
+                            {{ scope.row.drugCount !== null ? scope.row.drugCount : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="amount" label="金额">
+                    <el-table-column prop="amount" label="Price">
                         <template slot-scope="scope">
-                            {{ scope.row.amount !== null ? scope.row.amount : "无" }}
+                            {{ scope.row.amount !== null ? scope.row.amount : "None" }}
                         </template>
                     </el-table-column>
                 </el-table>
