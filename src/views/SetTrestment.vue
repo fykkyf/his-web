@@ -24,7 +24,6 @@
           <el-col :span="5">
             <el-form-item label="Type:">
               <el-select v-model="TreatmentDTO.treatmentCategory" clearable  placeholder="">
-
                 <el-option label="Treatment" value="2"></el-option>
                 <el-option label="Lab Test" value="3"></el-option>
                 <el-option label="Radiology" value="4"></el-option>
