@@ -96,7 +96,7 @@ export default {
             if(res.data.code==200){
               this.$message(res.data.msg);
               this.getAllRoles();
-              this.role = '';
+              this.role = {};
             }else {
               this.$message(res.data.msg);
             }

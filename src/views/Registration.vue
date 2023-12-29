@@ -28,7 +28,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="Previous Diagnosis" label-width="150px">
+            <el-form-item label="Medical History" label-width="150px">
               <el-input placeholder="" v-model="patientInfoDTO.clinicDiagnosisName" disabled
                 style="width: 300px;"></el-input>
             </el-form-item>

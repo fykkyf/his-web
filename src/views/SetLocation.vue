@@ -106,16 +106,17 @@ export default {
             if(res.data.code==200 ) {
               this.$message("Created");
               this.getAllLocations();
-              this.location='';
+              this.location={};
 
             }else if(res.data.code==201 ) {
               this.$message("Edit success");
               this.getAllLocations();
-              this.location='';
+              this.location={};
 
             }else {
               this.$message("Error");
             }
+
 
       })
       this.getAllLocations();

@@ -63,31 +63,31 @@
 <script>
 export default {
     methods: {
-        formatStatus(row) {
-            const status = row.executionStatus;
-            // 根据状态值返回对应的中文字符串
-            let statusText = "";
-            switch (status) {
-                case 1:
-                    statusText = "待审核";
-                    break;
-                case 2:
-                    statusText = "已执行";
-                    break;
-                case 3:
-                    statusText = "已驳回";
-                    break;
-                case 4:
-                    statusText = "已停止";
-                    break;
-                default:
-                    statusText = "未知";
-            }
-            return statusText;
-        },
-        filterTag(value, row) {
-            return row.tag === value;
-        },
+        // formatStatus(row) {
+        //     const status = row.executionStatus;
+        //     // 根据状态值返回对应的中文字符串
+        //     let statusText = "";
+        //     switch (status) {
+        //         case 1:
+        //             statusText = "待审核";
+        //             break;
+        //         case 2:
+        //             statusText = "已执行";
+        //             break;
+        //         case 3:
+        //             statusText = "已驳回";
+        //             break;
+        //         case 4:
+        //             statusText = "已停止";
+        //             break;
+        //         default:
+        //             statusText = "未知";
+        //     }
+        //     return statusText;
+        // },
+        // filterTag(value, row) {
+        //     return row.tag === value;
+        // },
         //查询所有患者信息
         getAllPatientInfos() {
             this.$axios.get("http://localhost/patientInfo/getByDoctorId").then(resp => {

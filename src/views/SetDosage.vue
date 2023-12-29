@@ -101,13 +101,15 @@ export default {
             if(res.data.code==200){
               this.$message(res.data.msg);
               this.getAllDosages();
-              this.dosage = '';
+              this.dosage = {};
             }else {
               this.$message(res.data.msg);
             }
 
           })
       this.show=false;
+      this.dosage = {};
+
     },
     editDosage(row){
       console.log(row);

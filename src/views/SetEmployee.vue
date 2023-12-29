@@ -166,14 +166,14 @@ export default {
               this.$message(res.data.msg);
               this.employeeVOs.push(this.employeeVO);
               this.getAllDoctors();
-              this.employeeVO = '';
+              this.employeeVO = {};
             } else if(res.data.code==202){
               this.$message(res.data.msg);
               this.getAllDoctors();
-              this.employeeVO = '';
+              this.employeeVO = {};
             } else {
               this.$message(res.data.msg);
-              this.employeeVO = '';
+              this.employeeVO = {};
             }
 
           })

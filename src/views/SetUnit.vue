@@ -101,7 +101,7 @@ export default {
             if(res.data.code==200){
                 this.$message(res.data.msg);
                 this.getAllUnits();
-                this.unit = '';
+                this.unit = {};
           }else {
               this.$message(res.data.msg);
           }

@@ -100,13 +100,14 @@ export default {
             if(res.data.code==200){
               this.$message(res.data.msg);
               this.getAllAdministration();
-              this.administration = '';
+              this.administration = {};
             }else {
               this.$message(res.data.msg);
             }
 
           })
       this.show=false;
+      this.administration={};
     },
     editAdministration(row){
       console.log(row);
