@@ -41,17 +41,17 @@
         <div>
             <template>
                 <el-table :data="patientOrders" style="width: 100%" :row-class-name="tableRowClassName">
-                    <el-table-column prop="patientOrderId" label="OID" width="120px">
+                    <el-table-column prop="patientOrderId" label="Order #" width="120px">
                         <template slot-scope="scope">
                             {{ scope.row.patientOrderId !== null ? scope.row.patientOrderId : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="treatmentId" label="TID" width="120px">
+                    <el-table-column prop="treatmentId" label="Treatment #" width="120px">
                         <template slot-scope="scope">
                             {{ scope.row.treatmentId !== null ? scope.row.treatmentId : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="treatmentName" label="Treatment">
+                    <el-table-column prop="treatmentName" label="Treatment" width="300">
                         <template slot-scope="scope">
                             {{ scope.row.treatmentName !== null ? scope.row.treatmentName : "None" }}
                         </template>
@@ -71,7 +71,7 @@
                             {{ scope.row.treatmentCount !== null ? scope.row.treatmentCount : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="orderType" label="Type">
+                    <el-table-column prop="orderType" label="Type" width="90">
                         <template slot-scope="scope">
                             {{ scope.row.orderType === 1 ? "Short" : "Long" }}
                         </template>

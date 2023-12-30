@@ -4,58 +4,58 @@
       <el-form ref="form" :model="patientRaidologyDTO" label-width="100px">
         <el-col :span="4">
           <div>
-            <h1 class="clinic-title">住院检查站</h1>
+            <h1 class="clinic-title">Radiology Station</h1>
           </div>
         </el-col>
         <el-col :span="7">
-          <el-form-item label="开始日期">
-            <el-date-picker v-model="patientRaidologyDTO.testDate" type="date" value-format="yyyy-MM-dd"
-              placeholder="检查日期">
+          <el-form-item label="Start time">
+            <el-date-picker v-model="patientRaidologyDTO.testDate" type="date" value-format="yyyy/MM/dd"
+              placeholder="">
             </el-date-picker>
           </el-form-item>
 
-          <el-form-item label="截止日期">
-            <el-date-picker v-model="patientRaidologyDTO.testDate1" type="date" value-format="yyyy-MM-dd"
-              placeholder="检查日期">
+          <el-form-item label="End Time">
+            <el-date-picker v-model="patientRaidologyDTO.testDate1" type="date" value-format="yyyy/MM/dd"
+              placeholder="">
             </el-date-picker>
           </el-form-item>
         </el-col>
 
         <el-col :span="7">
-          <el-form-item label="住院号">
-            <el-input v-model="patientRaidologyDTO.patientId" placeholder="住院号"></el-input>
+          <el-form-item label="Patient ID">
+            <el-input v-model="patientRaidologyDTO.patientId" placeholder=""></el-input>
           </el-form-item>
-          <el-form-item label="检查状态">
-            <el-radio v-model="patientRaidologyDTO.testStatus" label="1">未检查</el-radio>
-            <el-radio v-model="patientRaidologyDTO.testStatus" label="2">已检查</el-radio>
-            <el-radio v-model="patientRaidologyDTO.testStatus" label="null">不限</el-radio>
+          <el-form-item label="Status">
+            <el-radio v-model="patientRaidologyDTO.testStatus" label="1">Pending</el-radio>
+            <el-radio v-model="patientRaidologyDTO.testStatus" label="2">Finished</el-radio>
+            <el-radio v-model="patientRaidologyDTO.testStatus" label="null">All</el-radio>
           </el-form-item>
         </el-col>
         <el-col :span="2">
           <el-form-item label="">
-            <el-button type="primary" icon="el-icon-search" @click="getByKeyWord">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="getByKeyWord">Search</el-button>
           </el-form-item>
         </el-col>
       </el-form>
     </div>
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="patientRaidologyId" label="检查号">
+      <el-table-column prop="patientRaidologyId" label="ID" width="100px">
       </el-table-column>
-      <el-table-column prop="patientBillId" label="费用号">
+      <el-table-column prop="patientBillId" label="Order#" width="100px">
       </el-table-column>
-      <el-table-column prop="patientId" label="住院号">
+      <el-table-column prop="patientId" label="Patient#" width="100px">
       </el-table-column>
-      <el-table-column prop="patientName" label="病人姓名">
+      <el-table-column prop="patientName" label="Name">
       </el-table-column>
-      <el-table-column prop="unitName" label="科室">
+      <el-table-column prop="unitName" label="Unit">
       </el-table-column>
-      <el-table-column prop="employeeName" label="医生">
+      <el-table-column prop="employeeName" label="Physician">
       </el-table-column>
-      <el-table-column prop="treatmentName" label="项目名称"> </el-table-column>
+      <el-table-column prop="treatmentName" label="Treatment" width="350px"> </el-table-column>
 
-      <el-table-column label="添加图片">
+      <el-table-column label="Picture">
         <template slot-scope="scope">
-          <el-button size="mini" @click="toupdate(scope.row)">添加图片</el-button>
+          <el-button size="mini" @click="toupdate(scope.row)">Upload</el-button>
         </template>
       </el-table-column>
       <!-- <el-table-column label="上传">
@@ -84,13 +84,13 @@
 
     <el-dialog :title="myTitle" :visible.sync="show">
       <el-form ref="patientRaidology" :model="patientRaidology" label-width="80px">
-        <el-form-item label="检查编号" prop="patientRaidologyId">
+        <el-form-item label="ID" prop="patientRaidologyId" label-width="100px">
           <el-input v-model="patientRaidology.patientRaidologyId" disabled></el-input>
         </el-form-item>
-        <el-form-item label="住院编号" prop="patientId">
+        <el-form-item label="Patient #" prop="patientId" label-width="100px">
           <el-input v-model="patientRaidology.patientId" disabled></el-input>
         </el-form-item>
-        <el-form-item label="项目编号" prop="treatmentId">
+        <el-form-item label="Treatment #" prop="treatmentId" label-width="100px">
           <el-input v-model="patientRaidology.treatmentId" disabled></el-input>
         </el-form-item>
         <el-form-item>
@@ -107,13 +107,14 @@
                 >-->
           <el-upload ref="upload" action="" class="upload-demo" :http-request="httpRequest" :multiple="false" :limit="1"
             :auto-upload="false" :file-list="patientRaidology.file">
-            <el-button size="small" type="primary">选择图片</el-button>
+            <el-button size="small" type="primary">Select  File</el-button>
           </el-upload>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="onSubmit">确 定</el-button>
-        <el-button @click="closeDialog">取 消</el-button>
+        <el-button @click="closeDialog">Cancel</el-button>
+        <el-button type="primary" @click="onSubmit">Submit</el-button>
+
       </div>
     </el-dialog>
   </div>
@@ -175,14 +176,14 @@ export default {
       this.$axios.post("http://localhost/patientBill/modifyManipulateStatus", this.patientBill).then(res => {
         if (res.data.code == 200) {
           this.$message({
-            message: "添加成功",
+            message: "Add Success",
             type: "success"
           })
           this.show = false;
           this.get();
         } else {
           this.$message({
-            message: "有问题，添加失败",
+            message: "Add failed",
             type: "error"
           })
         }
@@ -196,7 +197,7 @@ export default {
       this.patientBill = {
         patientBillId: row.patientBillId
       }
-      this.myTitle = "添加图片";
+      this.myTitle = "Add File";
     },
     getAllPatientRaidos() {
       this.$axios.get("http://localhost/patientRaidology/getAll").then((resp) => {

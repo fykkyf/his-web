@@ -4,15 +4,15 @@
             <el-form ref="employeeDTO" :model="patientOrderDTO" label-width="80px">
                 <el-row type="flex" class="row-bg" justify="space-around">
                     <el-col :span="6">
-                        <el-form-item label="住院编号">
-                            <el-input v-model="patientOrderDTO.patient.patientId" placeholder="住院编号"></el-input>
+                        <el-form-item label="Patient ID">
+                            <el-input v-model="patientOrderDTO.patient.patientId" placeholder=""></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                        <el-form-item label="执行状态">
+                        <el-form-item label="Status">
                             <el-radio-group v-model="patientOrderDTO.executionStatus">
-                                <el-radio :label="1">待审核</el-radio>
-                                <el-radio :label="2">已审核</el-radio>
+                                <el-radio :label="1">Pending</el-radio>
+                                <el-radio :label="2">Done</el-radio>
                             </el-radio-group>
                         </el-form-item>
                     </el-col>
@@ -20,7 +20,7 @@
                         <el-button type="success" icon="el-icon-search" @click="getByKeywordLong">查询患者长期医嘱</el-button>
                     </el-col> -->
                     <el-col :span="2">
-                        <el-button type="success" icon="el-icon-search" @click="getByKeywordLong">查询患者医嘱</el-button>
+                        <el-button type="success" icon="el-icon-search" @click="getByKeywordLong">Search</el-button>
                     </el-col>
                 </el-row>
             </el-form>
@@ -28,56 +28,56 @@
         <div>
             <template>
                 <el-table :data="patientOrders" style="width: 100%" :row-class-name="tableRowClassName">
-                    <el-table-column prop="patient.patientId" label="住院编号">
+                    <el-table-column prop="patient.patientId" label="Patient ID">
                         <template slot-scope="scope">
-                            {{ scope.row.patient !== null ? scope.row.patient.patientId : "暂无信息" }}
+                            {{ scope.row.patient !== null ? scope.row.patient.patientId : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="patient.patientId" label="住院患者姓名">
+                    <el-table-column prop="patient.patientId" label="Name">
                         <template slot-scope="scope">
-                            {{ scope.row.patient !== null ? scope.row.patient.patientName : "暂无信息" }}
+                            {{ scope.row.patient !== null ? scope.row.patient.patientName : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="employee.employeeName" label="医生姓名">
+                    <el-table-column prop="employee.employeeName" label="Physician">
                         <template slot-scope="scope">
-                            {{ scope.row.employee !== null ? scope.row.employee.employeeName : "暂无信息" }}
+                            {{ scope.row.employee !== null ? scope.row.employee.employeeName : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="treatmentName" label="项目名称">
+                    <el-table-column prop="treatmentName" label="Treatment">
                         <template slot-scope="scope">
-                            {{ scope.row.treatmentName !== null ? scope.row.treatmentName : "暂无信息" }}
+                            {{ scope.row.treatmentName !== null ? scope.row.treatmentName : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="administration" label="用法">
+                    <el-table-column prop="administration" label="Indication">
                         <template slot-scope="scope">
-                            {{ scope.row.administration !== null ? scope.row.administration.administrationName : "暂无信息" }}
+                            {{ scope.row.administration !== null ? scope.row.administration.administrationName : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="dosage" label="用量">
+                    <el-table-column prop="dosage" label="Dosage">
                         <template slot-scope="scope">
-                            {{ scope.row.dosage !== null ? scope.row.dosage.dosageName : "暂无信息" }}
+                            {{ scope.row.dosage !== null ? scope.row.dosage.dosageName : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="treatmentCount" label="个数">
+                    <el-table-column prop="treatmentCount" label="Number">
                         <template slot-scope="scope">
-                            {{ scope.row.treatmentCount !== null ? scope.row.treatmentCount : "暂无信息" }}
+                            {{ scope.row.treatmentCount !== null ? scope.row.treatmentCount : "None" }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="executionStatus" label="执行状态" :formatter="formatStatus">
+                    <el-table-column prop="executionStatus" label="Status" :formatter="formatStatus">
                     </el-table-column>
-                    <el-table-column prop="orderType" label="医嘱类型">
+                    <el-table-column prop="orderType" label="Prescribe">
                         <template slot-scope="scope">
-                            {{ scope.row.orderType === 1 ? "短期" : "长期" }}
+                            {{ scope.row.orderType === 1 ? "One-time" : "Long-trem" }}
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" width="300px">
+                    <el-table-column label="Operations" width="300px">
                         <template slot-scope="scope">
                             <el-button size="mini" @click="handleExecute(scope.$index, scope.row) " v-if="scope.row.executionStatus == 1"
-                                type="success">执行</el-button>
-                            <el-button size="mini" @click="handleReject(scope.$index, scope.row)" 
-                                type="warning">驳回</el-button>
+                                type="success">Dispense</el-button>
+                            <el-button size="mini" @click="handleReject(scope.$index, scope.row)" v-if="scope.row.orderType == 3"
+                                type="warning">Reject</el-button>
                             <el-button size="mini" v-if="scope.row.orderType == 2" @click="handleCease(scope.$index, scope.row)"
-                                type="danger">停止</el-button>
+                                type="danger">Stop</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -101,19 +101,19 @@ export default {
             let statusText = "";
             switch (status) {
                 case 1:
-                    statusText = "待审核";
+                    statusText = "Pending";
                     break;
                 case 2:
-                    statusText = "已执行";
+                    statusText = "Done";
                     break;
                 case 3:
-                    statusText = "已驳回";
+                    statusText = "Rejected";
                     break;
                 case 4:
-                    statusText = "已停止";
+                    statusText = "Stopped";
                     break;
                 default:
-                    statusText = "未知";
+                    statusText = "Unknown";
             }
             return statusText;
         },
@@ -260,7 +260,7 @@ export default {
         }
     },
     created() {
-        // this.getAllpatientOrders()
+        this.getAllpatientOrders()
     }
 }
 </script>
