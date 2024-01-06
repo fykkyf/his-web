@@ -75,7 +75,7 @@
           <el-table-column  label="Operation">
             <template slot-scope="scope">
               <el-button type="primary" plain @click="selectImd(scope.row)"
-                >Search Medication</el-button
+                >Search</el-button
               >
             </template>
           </el-table-column>
@@ -96,58 +96,54 @@
           <el-table-column
             prop="patientBillId"
             label="Bill ID"
-            width="85"
-            sortable
+            width="65"
+
           >
           </el-table-column>
            
-          <el-table-column prop="patientId" label="Patient ID"  sortable>
+          <el-table-column prop="patientId" label="Patient ID" width="70">
           </el-table-column>
           
-          <el-table-column prop="patientName" label="Name" width="90" sortable>
+          <el-table-column prop="patientName" label="Name" width="90" >
           </el-table-column>
-          <el-table-column prop="gender" label="Gender" width="100" sortable>
+          <el-table-column prop="gender" label="Gender" width="80" >
             <template slot-scope="scope">
               <el-tag :type="scope.row.gender === 1 ? ' ' : 'danger'" disable-transitions>
                 {{ scope.row.gender === 1 ? 'Male' : 'Female' }}</el-tag>
 
             </template>
           </el-table-column>
-          <el-table-column prop="unitName" label="Unit" width="85" sortable>
+          <el-table-column prop="unitName" label="Unit" width="100" sortable>
           </el-table-column>
           <el-table-column
             prop="employeeName"
             label="Doctor"
             width="95"
-            sortable
-          >
-            <template slot-scope="scope">
-              <el-tag :type="scope.row.employee.employeeName !== null ? ' ' : 'danger'" disable-transitions>
-                {{ scope.row.employee !== null ? scope.row.employee.employeeName : "None" }}</el-tag>
 
-            </template>
+          >
+
           </el-table-column>
           <el-table-column
             prop="drugCode"
             label="Drug Tag"
-            width="110"
-            sortable
+            width="85"
+
           >
           </el-table-column>
           <el-table-column
             prop="treatmentName"
             label="Drug Name"
-            width="125"
-            sortable
+            width="185"
+
           >
           </el-table-column>
-          <el-table-column prop="drugCount" label="Number" width="110" sortable>
+          <el-table-column prop="drugCount" label="Number" width="100px" sortable>
           </el-table-column>
           <el-table-column
             prop="specification"
             label="Specification"
+            width="140px"
 
-            sortable
           >
           </el-table-column>
           <el-table-column
@@ -213,8 +209,8 @@ export default {
     },
      //批量发药事件
     imd() {
-      this.$confirm("Check Complete，Dispense Confirm？", "prompt", {
-        confirmButtonText: "Accept",
+      this.$confirm("Verify Complete，Dispense Confirm", "", {
+        confirmButtonText: "Confirm",
         cancelButtonText: "Cancel",
         type: "success",
       })

@@ -62,7 +62,7 @@
           <el-table-column  label="Operation">
             <template slot-scope="scope">
               <el-button type="primary" plain @click="selectPatientMedmx(scope.row)"
-                >Search Medication</el-button
+                >Select</el-button
               >
             </template>
           </el-table-column>
@@ -79,49 +79,45 @@
          <!-- <el-table-column type="selection" width="30"> </el-table-column> -->
           <el-table-column
               prop="patientBillId"
-              label="Bill ID"
-              width="85"
+              label="Bill#"
+              width="75"
               sortable
           >
           </el-table-column>
 
-          <el-table-column prop="patientId" label="Patient ID"  sortable>
+          <el-table-column prop="patientId" label="Patient#" width="80">
           </el-table-column>
 
-          <el-table-column prop="patientName" label="Name" width="90" sortable>
+          <el-table-column prop="patientName" label="Name" width="90" >
           </el-table-column>
-          <el-table-column prop="gender" label="Gender" width="100" sortable>
+          <el-table-column prop="gender" label="Gender" width="80" >
             <template slot-scope="scope">
               <el-tag :type="scope.row.gender === 1 ? ' ' : 'danger'" disable-transitions>
-                {{ scope.row.gender === 1 ? 'Male' : 'Female' }}</el-tag>
+                {{ scope.row.gender === 1 ? 'Male' : 'Female'}}</el-tag>
 
             </template>
           </el-table-column>
-          <el-table-column prop="unitName" label="Unit" width="85" sortable>
+          <el-table-column prop="unitName" label="Unit" width="120" sortable>
           </el-table-column>
           <el-table-column
               prop="employeeName"
-              label="Doctor"
-              width="95"
-              sortable
-          >
-            <template slot-scope="scope">
-              <el-tag :type="scope.row.employee.employeeName !== null ? ' ' : 'danger'" disable-transitions>
-                {{ scope.row.employee !== null ? scope.row.employee.employeeName : "None" }}</el-tag>
+              label="Physician"
+              width="85"
 
-            </template>
+          >
+
           </el-table-column>
           <el-table-column
               prop="drugCode"
               label="Drug Tag"
-              width="110"
-              sortable
+              width="90"
+
           >
           </el-table-column>
           <el-table-column
               prop="treatmentName"
               label="Drug Name"
-              width="125"
+              width="175"
               sortable
           >
           </el-table-column>

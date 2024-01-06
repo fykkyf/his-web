@@ -2,118 +2,118 @@
   <div>
     <!--    //查询-->
     <el-form :inline="true" style="float: left">
-      <el-form-item label="挂号单号" style="font-weight: bold;">
+      <el-form-item label="Visitor ID" style="font-weight: bold;">
         <el-input v-model="visitorId" placeholder="单号"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="getVisitorBillByVisitorId(visitorId)">查询</el-button>
+        <el-button type="primary" @click="getVisitorBillByVisitorId(visitorId)">Search</el-button>
       </el-form-item>
     </el-form>
     <br><br><br>
     <!--    //病人信息-->
 
-    <el-descriptions class="margin-top" title="患者信息" :column="3"  border
+    <el-descriptions class="margin-top" title="Patient Information" :column="3"  border
                      :data="visitorBillResultVO.visitorInfo" >
       <el-descriptions-item>
         <template slot="label">
           <i class="el-icon-s-custom"></i>
-          就诊号
+          ID
         </template>
         {{visitorBillResultVO.visitorInfo.visitorId}}
       </el-descriptions-item>
       <el-descriptions-item>
         <template slot="label">
           <i class="el-icon-user"></i>
-          用户名
+          Name
         </template>
         {{visitorBillResultVO.visitorInfo.visitorName}}
       </el-descriptions-item>
       <el-descriptions-item>
         <template slot="label">
           <i class="el-icon-date"></i>
-          年龄
+          Age
         </template>
         {{visitorBillResultVO.visitorInfo.age}}
       </el-descriptions-item>
       <el-descriptions-item>
         <template slot="label">
           <i class="el-icon-coordinate"></i>
-          身份证号
+          DL#
         </template>
         {{visitorBillResultVO.visitorInfo.idNumber}}
       </el-descriptions-item>
       <el-descriptions-item>
         <template slot="label">
           <i class="el-icon-male"></i>
-          性别
+          Gender
         </template>
         <template>
-          <span v-if="visitorBillResultVO.visitorInfo.gender == 0">女</span>
-          <span v-else-if="visitorBillResultVO.visitorInfo.gender == 1">男</span>
+          <span v-if="visitorBillResultVO.visitorInfo.gender == 2">Female</span>
+          <span v-else-if="visitorBillResultVO.visitorInfo.gender == 1">Male</span>
           <span v-else></span>
         </template>
       </el-descriptions-item>
       <el-descriptions-item>
         <template slot="label">
           <i class="el-icon-phone"></i>
-          手机号
+          Phone#
         </template>
         {{visitorBillResultVO.visitorInfo.phone}}
       </el-descriptions-item>
       <el-descriptions-item>
         <template slot="label">
           <i class="el-icon-location-outline"></i>
-          科室
+          Unit
         </template>
         {{visitorBillResultVO.visitorInfo.unit.unitName}}
       </el-descriptions-item>
       <el-descriptions-item>
         <template slot="label">
           <i class="el-icon-service"></i>
-          医生
+          Physician
         </template>
         {{visitorBillResultVO.visitorInfo.employee.employeeName}}
       </el-descriptions-item>
       <el-descriptions-item>
         <template slot="label">
           <i class="el-icon-search"></i>
-          门诊诊断
+          Diagnosis
         </template>
         {{visitorBillResultVO.visitorInfo.clinicDiagnosis.diseaseName}}
       </el-descriptions-item>
     </el-descriptions>
     <!--    //具体医嘱项目明细-->
     <br>
-    <span style="float: left; font-weight: bold;" font-family="微软雅黑" >费用明细 </span>
-    <el-table title="费用明细" :data="visitorBillResultVO.visitorBillVOList" style="width: 100%" border>
+    <span style="float: left; font-weight: bold;" font-family="微软雅黑" >Billing Detail </span>
+    <el-table title="Billing Detail" :data="visitorBillResultVO.visitorBillVOList" style="width: 100%" border>
       <el-table-column
           prop="visitorBillId"
-          label="费用单号">
+          label="Bill ID">
       </el-table-column>
 
       <el-table-column
           prop="treatmentName"
-          label="医疗项目名称">
+          label="Treatment">
       </el-table-column>
       <el-table-column
           prop="drugCount"
-          label="项目数目">
+          label="Treatment number">
       </el-table-column>
 
       <el-table-column
           prop="treatmentPrice"
-          label="项目金额">
+          label="Price">
       </el-table-column>
       <el-table-column
           prop="finalPrice"
-          label="支付金额">
+          label="Actual Price">
       </el-table-column>
       <el-table-column
           fixed="right"
-          label="操作">
+          label="Operations">
         <template slot-scope="scope">
           <el-button type="primary"  @click="refundPayment(scope.row,scope.$index)">
-            退款
+            Refund
 
           </el-button>
         </template>
@@ -122,14 +122,14 @@
 
 
     <el-dialog
-        title="退费"
+        title="refund"
         :visible.sync="show"
         width="30%"
         :before-close="handleClose">
-      <span>确认是否退款</span>
+      <span>Confirm Refund</span>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="show = false">取 消</el-button>
-    <el-button type="primary" @click="refundStatus(visitorBillId,index)">确 定</el-button>
+    <el-button @click="show = false">Cancel</el-button>
+    <el-button type="primary" @click="refundStatus(visitorBillId,index)">Submit</el-button>
   </span>
     </el-dialog>
   </div>
@@ -208,7 +208,7 @@ export default {
     },
 
     handleClose(done) {
-      this.$confirm('确认关闭？')
+      this.$confirm('Close？')
           .then(_ => {
             done();
           })

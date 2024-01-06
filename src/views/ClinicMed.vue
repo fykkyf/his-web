@@ -5,32 +5,32 @@
     <div>
       <el-form ref="form" :model="OmdDTOs" label-width="100px">
         <el-col :span="6">
-          <el-form-item label="开始日期">
+          <el-form-item label="Start Date">
             <el-date-picker
               v-model="OmdDTOs.orderDate"
               type="date"
               value-format="yyyy-MM-dd"
-              placeholder="下达日期"
+              placeholder=""
             >
             </el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="截止日期">
+          <el-form-item label="End Date">
             <el-date-picker
               v-model="OmdDTOs.orderDate1"
               type="date"
               value-format="yyyy-MM-dd"
-              placeholder="下达日期"
+              placeholder=""
             >
             </el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="5">
-          <el-form-item label="门诊号">
+          <el-form-item label="Visitor ID">
             <el-input
               v-model="OmdDTOs.visitorId"
-              placeholder="门诊号"
+              placeholder=""
             ></el-input>
           </el-form-item>
         </el-col>
@@ -40,7 +40,7 @@
               type="primary"
               icon="el-icon-search"
               @click="selectVisitorByOmd"
-              >汇总查询</el-button
+              >Search</el-button
             >
           </el-form-item>
         </el-col>
@@ -66,16 +66,16 @@
           :row-class-name="tableRowClassName"
         >
         
-          <el-table-column prop="visitorId" label="就诊号" width="60" sortable>
+          <el-table-column prop="visitorId" label="ID" width="55" >
           </el-table-column>
           
-          <el-table-column prop="visitorName" label="姓名" width="65" sortable>
+          <el-table-column prop="visitorName" label="Name" >
           </el-table-column>
           
-          <el-table-column  label="门诊发药操作">
+          <el-table-column  label="Operation">
             <template slot-scope="scope">
               <el-button type="primary" plain @click="selectOmd(scope.row)"
-                >查询发药</el-button
+                >Select</el-button
               >
             </template>
           </el-table-column>
@@ -92,63 +92,68 @@
           ref="multipleTable"
           :row-class-name="tableRowClassName"
         >
-         <el-table-column type="selection" width="30"> </el-table-column>
+         <el-table-column type="selection" width="35">
+
+         </el-table-column>
           <el-table-column
             prop="visitorBillId"
-            label="费用编号"
-            width="70"
-            sortable
+            label="Bill ID"
+            width="65"
+
           >
           </el-table-column>
            
-          <el-table-column prop="visitorId" label="门诊号" width="50" sortable>
+          <el-table-column prop="visitorId" label="Visit ID" width="70">
           </el-table-column>
           
-          <el-table-column prop="visitorName" label="姓名" width="100" sortable>
+          <el-table-column prop="visitorName" label="Name" width="90" >
           </el-table-column>
 
-          <el-table-column prop="gender" label="性别" width="50" sortable>
-             <template slot-scope="scope">
-               {{ scope.row.gender === 1 ? '男' : '女' }}
-                        </template>
+          <el-table-column prop="gender" label="Gender" width="80" >
+            <template slot-scope="scope">
+              <el-tag :type="scope.row.gender === 1 ? ' ' : 'danger'" disable-transitions>
+                {{ scope.row.gender === 1 ? 'Male' : 'Female' }}</el-tag>
+
+            </template>
           </el-table-column>
 
-          <el-table-column prop="unitName" label="科室" width="70" sortable>
+          <el-table-column prop="unitName" label="Unit" width="100" sortable>
           </el-table-column>
           <el-table-column
             prop="employeeName"
-            label="医生"
-            width="70"
-            sortable
+            label="Physician"
+            width="95"
+
           >
+
           </el-table-column>
           <el-table-column
             prop="drugCode"
-            label="国家药品编号"
-            width="100"
-            sortable
+            label="Drug Tag"
+            width="85"
+
           >
           </el-table-column>
           <el-table-column
             prop="treatmentName"
-            label="药品名称"
-            width="140"
-            sortable
+            label="Drug Name"
+            width="185"
+
           >
           </el-table-column>
-          <el-table-column prop="drugCount" label="数量" width="60" sortable>
+          <el-table-column prop="drugCount" label="Number" width="100" sortable>
           </el-table-column>
           <el-table-column
             prop="specification"
-            label="规格"
-            width="100"
-            sortable
+            label="specification"
+            width="130"
+
           >
           </el-table-column>
           <el-table-column
             prop="orderDate"
-            label="下达时间"
-            width="160"
+            label="Order Date"
+
             sortable
           >
           </el-table-column>
@@ -161,9 +166,9 @@
               plain
               class="el-icon-s-promotion"
               @click="omd"
-              >确认发药</el-button
+              >Dispense</el-button
             >
-        <el-button @click="toggleSelection()">取消选择</el-button>
+        <el-button @click="toggleSelection()">Cancel</el-button>
       </div>
       </div>
     </div>
@@ -206,9 +211,9 @@ export default {
     },
      //批量发药事件
     omd() {
-      this.$confirm("核对完毕，确认发药？", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$confirm("Verify Complete，Confirm Despense", "", {
+        confirmButtonText: "Confirm",
+        cancelButtonText: "Cancel",
         type: "success",
       })
         .then(() => {
@@ -218,7 +223,7 @@ export default {
             .then((resp) => {
               if (resp.data.code == 200) {
                 this.$message({
-                  message: "发药完成!",
+                  message: "Dispense Complete!",
                   type: "success",
                 });
                 this.selectVisitorByOmd();

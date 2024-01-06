@@ -5,32 +5,32 @@
     <div>
       <el-form ref="form" :model="OmdDTOs" label-width="100px">
         <el-col :span="6">
-          <el-form-item label="开始日期">
+          <el-form-item label="Start Date">
             <el-date-picker
               v-model="OmdDTOs.dispenseTime"
               type="date"
               value-format="yyyy-MM-dd"
-              placeholder="发药日期"
+              placeholder="Order Date"
             >
             </el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="截止日期">
+          <el-form-item label="End Date">
             <el-date-picker
               v-model="OmdDTOs.dispenseTime1"
               type="date"
               value-format="yyyy-MM-dd"
-              placeholder="发药日期"
+              placeholder="Order Date"
             >
             </el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="5">
-          <el-form-item label="门诊号">
+          <el-form-item label="Visitor ID">
             <el-input
               v-model="OmdDTOs.visitorId"
-              placeholder="门诊号"
+              placeholder=""
             ></el-input>
           </el-form-item>
         </el-col>
@@ -40,7 +40,7 @@
               type="primary"
               icon="el-icon-search"
               @click="selectClinicMed"
-              >汇总查询</el-button
+              >Search</el-button
             >
           </el-form-item>
         </el-col>
@@ -55,16 +55,16 @@
           :data="OmdVOs"
         >
         
-          <el-table-column prop="visitorId" label="就诊号" width="60" sortable>
+          <el-table-column prop="visitorId" label="ID" width="55" >
           </el-table-column>
           
-          <el-table-column prop="visitorName" label="姓名" width="65" sortable>
+          <el-table-column prop="visitorName" label="Name"  >
           </el-table-column>
           
-          <el-table-column  label="门诊已发药查询">
+          <el-table-column  label="Operation">
             <template slot-scope="scope">
               <el-button type="primary" plain @click="selectClinicMedmx(scope.row)"
-                >查询已发药</el-button
+                >Select</el-button
               >
             </template>
           </el-table-column>
@@ -81,61 +81,64 @@
          <!-- <el-table-column type="selection" width="30"> </el-table-column> -->
           <el-table-column
             prop="visitorBillId"
-            label="费用编号"
-            width="70"
+            label="Bill#"
+            width="75"
             sortable
           >
           </el-table-column>
            
-          <el-table-column prop="visitorId" label="门诊号" width="50" sortable>
+          <el-table-column prop="visitorId" label="Visitor#" width="80" >
           </el-table-column>
           
-          <el-table-column prop="visitorName" label="姓名" width="100" sortable>
+          <el-table-column prop="visitorName" label="Name" width="90" >
           </el-table-column>
-          <el-table-column prop="gender" label="性别" width="50" sortable>
+          <el-table-column prop="gender" label="Gender" width="80" >
             <template slot-scope="scope">
-               {{ scope.row.gender === 1 ? '男' : '女' }}
-                        </template>
+              <el-tag :type="scope.row.gender === 1 ? ' ' : 'danger'" disable-transitions>
+                {{ scope.row.gender === 1 ? 'Male' : 'Female'}}</el-tag>
+
+            </template>
           </el-table-column>
-          <el-table-column prop="unitName" label="科室" width="70" sortable>
+          <el-table-column prop="unitName" label="Unit" width="120" sortable>
           </el-table-column>
           <el-table-column
-            prop="employeeName"
-            label="医生"
-            width="70"
-            sortable
+              prop="employeeName"
+              label="Physician"
+              width="85"
+
+          >
+
+          </el-table-column>
+          <el-table-column
+              prop="drugCode"
+              label="Drug Tag"
+              width="90"
+
           >
           </el-table-column>
           <el-table-column
-            prop="drugCode"
-            label="国家药品编号"
-            width="100"
-            sortable
+              prop="treatmentName"
+              label="Drug Name"
+              width="175"
+              sortable
+          >
+          </el-table-column>
+          <el-table-column prop="drugCount" label="Number" width="110" sortable>
+          </el-table-column>
+          <el-table-column
+              prop="specification"
+              label="Specification"
+
+              sortable
           >
           </el-table-column>
           <el-table-column
-            prop="treatmentName"
-            label="药品名称"
-            width="140"
-            sortable
+              prop="orderDate"
+              label="Order Date"
+
+              sortable
           >
           </el-table-column>
-          <el-table-column prop="drugCount" label="数量" width="60" sortable>
-          </el-table-column>
-          <el-table-column
-            prop="specification"
-            label="规格"
-            width="100"
-            sortable
-          >
-          </el-table-column>
-          <el-table-column
-            prop="dispenseTime"
-            label="发药时间"
-            width="160"
-            sortable
-          >
-          </el-table-column>    
         </el-table>
       </div>
     </div>
