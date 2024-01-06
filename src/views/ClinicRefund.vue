@@ -3,7 +3,7 @@
     <!--    //查询-->
     <el-form :inline="true" style="float: left">
       <el-form-item label="Visitor ID" style="font-weight: bold;">
-        <el-input v-model="visitorId" placeholder="单号"></el-input>
+        <el-input v-model="visitorId" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getVisitorBillByVisitorId(visitorId)">Search</el-button>
@@ -178,8 +178,15 @@ export default {
   methods:{
     getVisitorBillByVisitorId(visitorId) {
       this.$axios.get("http://localhost/visitorBill/getRefundByVisitorId/"+visitorId).then((res) => {
-        this.visitorBillResultVO = res.data.data;
-        console.log( res.data.data)
+        if(res.data.code==200){
+          this.visitorBillResultVO = res.data.data;
+          console.log( res.data.data)
+          this.visitorId='';
+        }else {
+          this.$message("No information found");
+          this.visitorId='';
+        }
+
       });
     },
     refundPayment(row,index){

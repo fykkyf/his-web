@@ -1,14 +1,14 @@
 <template >
   <div>
-<!--    //查询-->
-    <el-form :inline="true"  style="float: left">
-      <el-form-item label="Petient ID" style="font-weight: bold;">
-        <el-input v-model="patientId" placeholder="" ></el-input>
+    <el-form :inline="true" style="float: left">
+      <el-form-item label="Patient ID" style="font-weight: bold;" prop="patientId" >
+        <el-input v-model="patientId" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="getPatientBillByPatientId(patientId)">Search</el-button>
+        <el-button type="primary" @click="getPatientBillByPatientId(patientId)" :disabled="isSearchButtonDisabled">Search</el-button>
       </el-form-item>
     </el-form>
+
     <br><br><br>
 <!--    //病人信息-->
 
@@ -183,12 +183,24 @@ export default {
 
     };
   },
+  computed: {
+    isSearchButtonDisabled() {
+      return !this.patientId; // 禁用按钮如果patientId为空
+    }
+  },
   methods:{
 
     getPatientBillByPatientId(patientId) {
 
       this.$axios.get("http://localhost/patientBill/getPatientBill/"+patientId).then((res) => {
-        this.patientBillResultVO = res.data.data;
+        if (res.data.code ==200){
+          this.patientBillResultVO = res.data.data;
+          this.patientId = '';
+        }else {
+          this.$message(res.data.data);
+          this.patientId='';
+        }
+
 
       });
     },

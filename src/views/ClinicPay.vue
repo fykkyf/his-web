@@ -6,7 +6,7 @@
         <el-input v-model="visitorId" placeholder=""></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="getVisitorBillByVisitorId(visitorId)">Search</el-button>
+        <el-button type="primary" @click="getVisitorBillByVisitorId(visitorId)" :disabled="isSearchButtonDisabled">Search</el-button>
       </el-form-item>
     </el-form>
     <br><br><br>
@@ -166,11 +166,23 @@ export default {
 
     };
   },
+  computed: {
+    isSearchButtonDisabled() {
+      return !this.visitorId; // 禁用按钮如果patientId为空
+    }
+  },
   methods:{
     getVisitorBillByVisitorId(visitorId) {
       this.$axios.get("http://localhost/visitorBill/getBillByVisitorId/"+visitorId).then((res) => {
-        this.visitorBillResultVO = res.data.data;
-        console.log( res.data.data)
+        if(res.data.code == 200){
+          this.visitorBillResultVO = res.data.data;
+          console.log( res.data.data);
+          this.visitorId='';
+        }else {
+          this.$message(res.data.data);
+          this.visitorId='';
+        }
+
       });
     },
     paymentStatus(visitorId) {
