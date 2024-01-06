@@ -195,7 +195,7 @@ export default {
       this.$axios.get("http://localhost/patientBill/getPatientBill/"+patientId).then((res) => {
         if (res.data.code ==200){
           this.patientBillResultVO = res.data.data;
-          this.patientId = '';
+
         }else {
           this.$message(res.data.data);
           this.patientId='';
@@ -214,6 +214,7 @@ export default {
                 type: "success",
               });
               this.patientBillVOList = [];
+              this.patientId = '';
             }
           });
 

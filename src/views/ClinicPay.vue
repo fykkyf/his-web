@@ -177,7 +177,7 @@ export default {
         if(res.data.code == 200){
           this.visitorBillResultVO = res.data.data;
           console.log( res.data.data);
-          this.visitorId='';
+
         }else {
           this.$message(res.data.data);
           this.visitorId='';
@@ -195,6 +195,7 @@ export default {
                 type: "success",
               });
               this.visitorBillResultVO = {};
+              this.visitorId='';
             }
           });
 
