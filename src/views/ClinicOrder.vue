@@ -1,44 +1,55 @@
 <template>
   <div>
     <el-form ref="form" :model="visitorInfo">
-      <el-row>
-        <el-form-item label="姓名">
+      <el-row type="flex" class="row-bg" justify="space-around" align="left">
+        <el-col :span="2">
+          <el-button type="primary" @click="showDialog">Check In</el-button>
+        </el-col>
+        <el-col :span="6">
+        <el-form-item label="Name">
           <el-input
             v-model="visitorInfo.visitorName"
-            placeholder="请输入名字"
+            placeholder=""
             @input="getByCondition"
+            style="width: 300px"
           ></el-input>
         </el-form-item>
-        <el-form-item label="身份证号">
+        </el-col>
+        <el-col :span="6">
+        <el-form-item label="DL #">
           <el-input
             v-model="visitorInfo.idNumber"
-            placeholder="请输入身份证号"
+            placeholder="Driver's License"
             @input="getByCondition"
+            style="width: 300px"
           ></el-input>
         </el-form-item>
+        </el-col>
+        <el-col :span="6">
+        </el-col>
       </el-row>
     </el-form>
 
-    <el-button @click="showDialog">挂号</el-button>
+
 
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="visitorId" label="就诊号"> </el-table-column>
-      <el-table-column prop="visitorName" label="病人姓名"> </el-table-column>
-      <el-table-column prop="gender" label="性别"> </el-table-column>
-      <el-table-column prop="age" label="年龄"> </el-table-column>
-      <el-table-column prop="idNumber" label="身份证号"> </el-table-column>
-      <el-table-column prop="phone" label="手机号"> </el-table-column>
-      <el-table-column prop="unit.unitName" label="就诊科室"> </el-table-column>
-      <el-table-column prop="employee.employeeName" label="就诊医生">
+      <el-table-column prop="visitorId" label="ID" width="50px"> </el-table-column>
+      <el-table-column prop="visitorName" label="Name"> </el-table-column>
+      <el-table-column prop="gender" label="Gender" width="80px"> </el-table-column>
+      <el-table-column prop="age" label="Age" width="80px"> </el-table-column>
+      <el-table-column prop="idNumber" label="DL#" width="110px"> </el-table-column>
+      <el-table-column prop="phone" label="Phone#" width="110px"> </el-table-column>
+      <el-table-column prop="unit.unitName" label="Unit"> </el-table-column>
+      <el-table-column prop="employee.employeeName" label="Physician">
       </el-table-column>
-      <el-table-column prop="clinicDiagnosis.diseaseName" label="门诊诊断">
+      <el-table-column prop="clinicDiagnosis.diseaseName" label="Diagnosis" width="180px">
       </el-table-column>
-      <el-table-column prop="clinicStartTime" label="就诊时间">
+      <el-table-column prop="clinicStartTime" label="ADT" width="120px">
       </el-table-column>
-      <el-table-column prop="clinicStatus" label="状态"> </el-table-column>
-      <el-table-column label="修改">
+      <el-table-column prop="clinicStatus" label="Status"> </el-table-column>
+      <el-table-column label="Operations">
         <template slot-scope="scope">
-          <el-button size="mini" @click="toupdate(scope.row)">修改</el-button>
+          <el-button size="mini" @click="toupdate(scope.row)">Edit Profile</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -52,27 +63,27 @@
         class="demo-ruleForm"
         :rules="rules"
       >
-        <el-form-item label="姓名" prop="visitorName">
+        <el-form-item label="Name" prop="visitorName">
           <el-input v-model="visitor.visitorName"></el-input>
         </el-form-item>
-        <el-form-item label="性别" prop="gender">
-          <el-radio v-model="visitor.gender" label="1">男</el-radio>
-          <el-radio v-model="visitor.gender" label="2">女</el-radio>
+        <el-form-item label="Gender" prop="gender">
+          <el-radio v-model="visitor.gender" label="1">Male</el-radio>
+          <el-radio v-model="visitor.gender" label="2">Female</el-radio>
         </el-form-item>
-        <el-form-item label="年龄" prop="age">
+        <el-form-item label="Age" prop="age">
           <el-input v-model="visitor.age"></el-input>
         </el-form-item>
-        <el-form-item label="身份证号" prop="idNumber">
+        <el-form-item label="DL#" prop="idNumber">
           <el-input v-model="visitor.idNumber"></el-input>
         </el-form-item>
-        <el-form-item label="手机号" prop="phone">
+        <el-form-item label="Phone#" prop="phone">
           <el-input v-model="visitor.phone"></el-input>
         </el-form-item>
-        <el-form-item label="科室">
+        <el-form-item label="Unit">
           <el-select
             v-model="visitor.unit.unitId"
             clearable
-            placeholder="请选择就诊科室"
+            placeholder=""
             @change="selDep"
           >
             <el-option
@@ -83,11 +94,11 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="医生">
+        <el-form-item label="Physician">
           <el-select
             v-model="visitor.employee.employeeId"
             clearable
-            placeholder="请选择医生"
+            placeholder=""
           >
             <el-option
               v-for="doc in employees"
@@ -103,13 +114,13 @@
           type="primary"
           @click="onSubmit('visitor')"
           :disabled="isDisabled"
-          >确 定</el-button
+          >Submit</el-button
         >
         <el-button type="primary" :disabled="isDisableds" @click="pay"
-          >点击付款</el-button
+          >Pay</el-button
         >
         <el-button @click="closeDialog" :disabled="isDisabledss"
-          >取 消</el-button
+          >Cancel</el-button
         >
       </div>
     </el-dialog>
@@ -122,17 +133,17 @@
         label-width="80px"
         class="demo-ruleForm"
       >
-        <el-form-item label="就诊号" prop="visitorId">
+        <el-form-item label="ID" prop="visitorId">
           <el-input v-model="visitor.visitorId" disabled></el-input>
         </el-form-item>
-        <el-form-item label="姓名" prop="visitorName">
+        <el-form-item label="Name" prop="visitorName">
           <el-input v-model="visitor.visitorName" disabled></el-input>
         </el-form-item>
-        <el-form-item label="科室">
+        <el-form-item label="Unit">
           <el-select
             v-model="visitor.unit.unitId"
             clearable
-            placeholder="请选择就诊科室"
+            placeholder=""
             @change="selDep"
           >
             <el-option
@@ -143,11 +154,11 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="医生">
+        <el-form-item label="Physician">
           <el-select
             v-model="visitor.employee.employeeId"
             clearable
-            placeholder="请选择医生"
+            placeholder=""
           >
             <el-option
               v-for="doc in employees"
@@ -159,8 +170,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="onSubmitUpdate()">确 定</el-button>
-        <el-button @click="closeDialogs">取 消</el-button>
+        <el-button type="primary" @click="onSubmitUpdate()">Submit</el-button>
+        <el-button @click="closeDialogs">Cancel</el-button>
       </div>
     </el-dialog>
   </div>
@@ -193,24 +204,24 @@ export default {
       employees: [],
       rules: {
         visitorName: [
-          { required: true, message: "请输入姓名", trigger: "blur" },
-          { min: 2, max: 6, message: "长度在 2 到 6 个字符", trigger: "blur" },
+          { required: true, message: "Please Enter Name", trigger: "blur" },
+          { min: 2, max: 18, message: "Length Out of range", trigger: "blur" },
         ],
         idNumber: [
-          { required: true, message: "请输入身份证号", trigger: "blur" },
+          { required: true, message: "DL# ", trigger: "blur" },
           {
-            min: 9,
-            max: 9,
-            message: "长度在 2 到 12 个字符",
+            min: 2,
+            max: 12,
+            message: "2-12 Character",
             trigger: "blur",
           },
         ],
-        gender: [{ required: true, message: "请选择性别", trigger: "change" }],
+        gender: [{ required: true, message: "Select a Gender", trigger: "change" }],
         unit: [
           {
             type: "array",
             required: true,
-            message: "请选择一个部门",
+            message: "Choose an unit",
             trigger: "change",
           },
         ],
@@ -218,7 +229,7 @@ export default {
           {
             type: "array",
             required: true,
-            message: "请选择一个医生",
+            message: "choose a physician",
             trigger: "change",
           },
         ],
@@ -242,7 +253,7 @@ export default {
         .then((res) => {
           if (res.data.code == 200) {
             this.$message({
-              message: "修改成功",
+              message: "success",
               type: "success",
             });
             this.shows = false;
@@ -263,7 +274,7 @@ export default {
                 if (resp.data.code == 200) {
                   this.tableData.push(resp.data.data);
                   this.$message({
-                    message: "挂号成功,已付款:" + price + "元",
+                    message: "Check in success,paid: $" + price + " dollars",
                     type: "success",
                   });
                   // this.show = false; // 这行代码现在应该可以工作
@@ -326,7 +337,7 @@ export default {
       this.$refs[visitor].validate((valid) => {
         if (valid) {
           this.$message({
-            message: "请支付",
+            message: "Please pay first",
             type: "warning",
           });
           this.isDisabled = true;
@@ -343,16 +354,16 @@ export default {
             this.tableData = res.data.data;
             this.tableData.forEach((item) => {
               if (item.gender == 1) {
-                item.gender = "男";
+                item.gender = "Male";
               } else if (item.gender == 2) {
-                item.gender = "女";
+                item.gender = "Female";
               }
               if (item.clinicStatus == 1) {
-                item.clinicStatus = "候诊";
+                item.clinicStatus = "Waiting";
               } else if (item.clinicStatus == 2) {
-                item.clinicStatus = "就诊";
+                item.clinicStatus = "In Progress";
               } else {
-                item.clinicStatus = "过诊";
+                item.clinicStatus = "Done";
               }
             });
           }

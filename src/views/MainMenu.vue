@@ -10,7 +10,7 @@
         <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
           <el-menu :router="true" style=" text-align: left;">
             <el-submenu v-for="menu in menus" :key="menu.menuId" :index="menu.menuId + ''">
-              <template slot="title"><i class="el-icon-message"></i>{{ menu.menuName }}</template>
+              <template slot="title"><i class="el-icon-folder-opened"></i>{{ menu.menuName }}</template>
               <el-menu-item-group>
                 <el-menu-item v-for="submenu in menu.children" :key="submenu.menuId"
                   :index="submenu.path">{{ submenu.menuName }}</el-menu-item>

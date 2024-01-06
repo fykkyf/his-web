@@ -2,88 +2,60 @@
   <el-card>
     <!-- 条件查询 -->
     <el-form ref="form" :model="visitorInfo">
-      <el-row>
-        <el-form-item label="姓名">
-          <el-input
-            v-model="visitorInfo.visitorName"
-            placeholder="请输入名字"
-            @input="getByCondition"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="身份证号">
-          <el-input
-            v-model="visitorInfo.idNumber"
-            placeholder="请输入身份证号"
-            @input="getByCondition"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-radio v-model="visitorInfo.clinicStatus"  @input="getByCondition" label="1">候诊</el-radio>
-          <el-radio v-model="visitorInfo.clinicStatus"  @input="getByCondition" label="2">就诊</el-radio>
-          <el-radio v-model="visitorInfo.clinicStatus"  @input="getByCondition" label="3">过诊</el-radio>
-        </el-form-item>
+      <el-row type="flex" class="row-bg" justify="space-around">
+        <el-col :span="6">
+          <el-form-item label="Name" label-width="80px">
+            <el-input v-model="visitorInfo.visitorName" placeholder="Visitor Name" @input="getByCondition"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="DL" label-width="80px">
+            <el-input v-model="visitorInfo.idNumber" placeholder="Driver's License" @input="getByCondition"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="Status">
+            <el-radio v-model="visitorInfo.clinicStatus"  @input="getByCondition" label="1">Pending</el-radio>
+            <el-radio v-model="visitorInfo.clinicStatus"  @input="getByCondition" label="2">In Progress</el-radio>
+            <el-radio v-model="visitorInfo.clinicStatus"  @input="getByCondition" label="3">Done</el-radio>
+          </el-form-item>
+        </el-col>
       </el-row>
     </el-form>
     <!-- 表格 -->
     <el-table :data="orderData" stripe border>
-      <el-table-column prop="visitorId" label="就诊号"> </el-table-column>
-      <el-table-column prop="visitorName" label="病人姓名"> </el-table-column>
-      <el-table-column prop="gender" label="性别"> </el-table-column>
-      <el-table-column prop="age" label="年龄"> </el-table-column>
-      <el-table-column prop="idNumber" label="身份证号"> </el-table-column>
-      <el-table-column prop="phone" label="手机号"> </el-table-column>
-      <!-- <el-table-column prop="unit.unitName" label="就诊科室"> </el-table-column>
-      <el-table-column prop="employee.employeeName" label="就诊医生">
-      </el-table-column> -->
-      <el-table-column prop="clinicDiagnosis.diseaseName" label="门诊诊断">
+      <el-table-column prop="visitorId" label="ID" width="50px"> </el-table-column>
+      <el-table-column prop="visitorName" label="Name" width="100px"> </el-table-column>
+      <el-table-column prop="gender" label="Gender" width="80px"> </el-table-column>
+      <el-table-column prop="age" label="Age" width="80px"> </el-table-column>
+      <el-table-column prop="idNumber" label="DL #" width="100px"> </el-table-column>
+      <el-table-column prop="phone" label="Phone #"> </el-table-column>
+      <el-table-column prop="clinicDiagnosis.diseaseName" label="Diagnosis">
       </el-table-column>
-      <el-table-column prop="clinicStartTime" label="就诊时间">
+      <el-table-column prop="clinicStartTime" label="Start time">
       </el-table-column>
-      <el-table-column prop="clinicStatus" label="状态"> </el-table-column>
-      <!-- <el-table-column label="就诊id" prop="visitorId"></el-table-column>
-      <el-table-column label="患者姓名" prop="visitorName"></el-table-column>
-      <el-table-column label="患者年龄" prop="age"></el-table-column>
-      <el-table-column
-        label="就诊医生"
-        prop="employee.employeeName"
-      ></el-table-column> -->
-      <el-table-column label="操作" fixed="right">
+      <el-table-column prop="clinicStatus" label="Status"> </el-table-column>
+      <el-table-column label="Operations" width="350px">
         <template slot-scope="scope">
-          <el-button
-            type="warning"
-            style="font-size: 15px"
-            @click="handleEdit(scope.$index, scope.row)"
-          >
-            医嘱
-          </el-button>
-          <el-button
-            type="warning"
-            style="font-size: 15px"
-            @click="dealClick(scope.row)"
-          >
-            诊断
-          </el-button>
-          <el-button
-            type="warning"
-            style="font-size: 15px"
-            @click="openImage(scope.row)"
-            >查看图片</el-button
-          >
+          <el-button type="success"  @click="handleEdit(scope.$index, scope.row)">Prescribe</el-button>
+          <el-button type="primary"  @click="dealClick(scope.row)">Diagnosis</el-button>
+          <el-button type="warning"  @click="openImage(scope.row)">Images</el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <!-- 诊断的对话框 -->
     <el-dialog :title="myTitles" :visible.sync="shows">
-      <el-form ref="visitor" :model="visitor" label-width="80px">
-        <el-form-item label="病例id" prop="visitorId">
-          <el-input v-model="visitor.visitorId" disabled></el-input>
+      <el-form ref="visitor" :model="visitor" label-width="80px" justify="left">
+        <el-form-item label="Visitor ID" prop="visitorId">
+          <el-input v-model="visitor.visitorId" disabled style="width: 200px"></el-input>
         </el-form-item>
-        <el-form-item label="疾病类型">
+        <el-form-item label="Diagnosis">
           <el-select
             v-model="visitor.diseaseId"
             clearable
-            placeholder="请选择疾病"
+            placeholder=""
           >
             <el-option
               v-for="dis in diseases"
@@ -95,15 +67,15 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="onSubmits()">确 定</el-button>
-        <el-button @click="shows = false">取 消</el-button>
+        <el-button @click="shows = false">Cancel</el-button>
+        <el-button type="primary" @click="onSubmits()">Submit</el-button>
       </div>
     </el-dialog>
 
     <!-- 下医嘱的对话框 -->
     <div>
       <el-dialog
-        title="医嘱信息"
+        title="Prescribe Information"
         :visible.sync="orderDialogVisible"
         width="80%"
         center
@@ -111,30 +83,30 @@
         <el-form :model="clinicOrderDTO">
           <el-row type="flex" class="row-bg" justify="space-around">
             <el-col :span="10">
-              <el-form-item label="患者id:">
+              <el-form-item label="ID:" label-width="150px">
                 <el-input
                   v-model="clinicOrderDTO.visitorId"
                   disabled
                   style="width: 200px"
                 ></el-input>
               </el-form-item>
-              <el-form-item label="项目类型:">
+              <el-form-item label="Treatment Type:" label-width="150px">
                 <el-select
                   v-model="clinicOrderDTO.treatment.treatmentCategory"
-                  placeholder="请选择类型"
+                  placeholder=""
                   @change="getAllTreatments()"
                 >
-                  <el-option label="药品" value="1"></el-option>
-                  <el-option label="诊疗" value="2"></el-option>
-                  <el-option label="检验" value="3"></el-option>
-                  <el-option label="检查" value="4"></el-option>
+                  <el-option label="Medication" value="1"></el-option>
+                  <el-option label="Treatment" value="2"></el-option>
+                  <el-option label="Radiology Test" value="3"></el-option>
+                  <el-option label="Lab Test" value="4"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="项目信息:">
+              <el-form-item label="Treatment Info:" label-width="150px">
                 <el-select
                   v-model="clinicOrderDTO.treatment.treatmentId"
                   clearable
-                  placeholder="请选择项目"
+                  placeholder=""
                 >
                   <el-option
                     v-for="item in treatments"
@@ -145,11 +117,11 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="用法信息:">
+              <el-form-item label="Indication:" label-width="150px">
                 <el-select
                   v-model="clinicOrderDTO.administrationId"
                   clearable
-                  placeholder="请选择用法"
+                  placeholder=""
                 >
                   <el-option
                     v-for="item in administrations"
@@ -160,11 +132,11 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="用量信息:">
+              <el-form-item label="Dosage:" label-width="150px">
                 <el-select
                   v-model="clinicOrderDTO.dosageId"
                   clearable
-                  placeholder="请选择用量"
+                  placeholder=""
                 >
                   <el-option
                     v-for="item in dosages"
@@ -175,7 +147,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="个数:">
+              <el-form-item label="Number:" label-width="150px">
                 <el-input
                   v-model="clinicOrderDTO.treatmentCount"
                   style="width: 200px"
@@ -185,9 +157,9 @@
           </el-row>
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="orderDialogVisible = false">取 消</el-button>
+          <el-button @click="orderDialogVisible = false">Cancel</el-button>
           <el-button type="primary" @click="submitPatientOrder()"
-            >确 定</el-button
+            >Submit</el-button
           >
         </span>
       </el-dialog>
@@ -232,7 +204,7 @@ export default {
         )
         .then((resp) => {
           if (resp.data.code == 200) {
-            this.$message.success("办理成功");
+            this.$message.success("Success");
             this.orderDialogVisible = false;
             this.getByCondition();
           } else {
@@ -253,7 +225,7 @@ export default {
         .then((res) => {
           if (res.data.code == 200) {
             this.$message({
-              message: "病人进入就诊",
+              message: "Success",
               type: "success",
             });
             this.orderDialogVisible = true;
@@ -327,13 +299,13 @@ export default {
               window.open(url, "_blank");
             } else {
               this.$message({
-                message: "暂无图片",
+                message: "No Images",
                 type: "error",
               });
             }
           } else {
             this.$message({
-              message: "暂无图片",
+              message: "No Images",
               type: "error",
             });
           }
@@ -375,7 +347,7 @@ export default {
         .then((res) => {
           if (res.data.code == 200) {
             this.$message({
-              message: "下诊断成功",
+              message: "Success",
               type: "success",
             });
           }
@@ -391,16 +363,16 @@ export default {
             this.orderData = res.data.data;
             this.orderData.forEach((item) => {
               if (item.gender == 1) {
-                item.gender = "男";
+                item.gender = "Male";
               } else if (item.gender == 2) {
-                item.gender = "女";
+                item.gender = "Female";
               }
               if (item.clinicStatus == 1) {
-                item.clinicStatus = "候诊";
+                item.clinicStatus = "Waiting";
               } else if (item.clinicStatus == 2) {
-                item.clinicStatus = "就诊";
+                item.clinicStatus = "In Progress";
               } else {
-                item.clinicStatus = "过诊";
+                item.clinicStatus = "Done";
               }
             });
           }
