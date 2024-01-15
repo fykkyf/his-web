@@ -23,7 +23,7 @@ Typically, hospital visits in China are much the same as in Western countries. B
 
 
 
-![MedicalTreatmentProcess](./pic/Medical Treatment Process.png)
+![image](https://github.com/fmageykkyf/his-web/blob/master/pic/Medical%20Treatment%20Process.png)
 
 
 
