@@ -22,8 +22,7 @@ China's hospital system has continuously upgraded hospital information managemen
 Typically, hospital visits in China are much the same as in Western countries. But there are still differences. For example, most hospitals in China will settle the account immediately instead of mailing bills later. The process of seeing a doctor in a Chinese hospital is roughly as follows.
 
 
-
-![image](https://github.com/fmageykkyf/his-web/blob/master/pic/Medical%20Treatment%20Process.png)
+![image](https://github.com/fykkyf/his-web/blob/master/pic/Medical%20Treatment%20Process.png)
 
 
 
